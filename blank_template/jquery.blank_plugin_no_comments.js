@@ -102,8 +102,6 @@
                     break;
             }
         };
-        
-        __construct();
     };
     
     $.fn[pluginName] = function(options, parameters) {
