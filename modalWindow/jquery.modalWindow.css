@@ -1,0 +1,85 @@
+#modalWindowOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100000000;
+}
+.modalWindowContainer {
+    position: relative;
+    width: 550px;
+    min-height: 25px;
+    max-height: 90%;
+    margin: 5% auto;
+    border: 2px solid #4fc0c0;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    box-shadow: 2px 2px 4px grey;
+    -moz-box-shadow: 2px 2px 4px grey;
+    -webkit-box-shadow: 2px 2px 4px grey;
+    overflow-y: visible;
+    background-color: #fcfcfc;
+    z-index: 100000001;
+}
+.modalWindowContainer.transparent {
+    background: rgba(255, 255, 255, 0.5);
+}
+.modalWindowContainer .modalWindowHeader {
+    position: absolute;
+    right: 20px;
+    z-index: 100000000;
+    /*border-bottom: 1px solid #ccc;*/
+    padding: 15px 10px 5px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: right;
+}
+.modalWindowContainer .modalWindowHeader .delete {
+    float: right;
+    width: 16px;
+    height: 16px;
+    background-image: url(img/icons16x16.png);
+    background-repeat: no-repeat;
+    background-position: -48px 0px;
+    cursor: pointer;
+}
+.modalWindowContainer .modalWindowHeader .delete:hover {
+    background-position: -48px 0px;
+}
+.modalWindowContainer .modalWindowContent {
+    /*height: 100%;*/
+    padding: 30px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    overflow-y: visible;
+}
+
+.modalWindowContainer .modalWindowContent > .element-container {
+    /*height: 100%;*/
+}
+.modalWindowContainer .modalWindowContent > .element-container > .image-container {
+    /*height: 100%;*/
+    text-align: center;
+}
+.modalWindowContainer .modalWindowContent > .element-container > .image-container > .helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.modalWindowContainer .modalWindowContent > .element-container > .image-container > img {
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+}
+.modalTemplate { display: none; }
+
+/*Override -> y scroll visible*/
+#modalWindow{
+    overflow: auto;
+}

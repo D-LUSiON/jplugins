@@ -1,0 +1,55 @@
+.ExAC-main-container { position: relative; margin-bottom: 10px; }
+.ExAC-main-container input[type=text],
+.tagger-container.ExAC { margin: 0; background-color: #ffffff; background-image: url(img/icon-expander-down.png); background-position: right 5px top 10px; background-repeat: no-repeat; }
+.ExAC-main-container.loading input[type=text] { background-image: url(img/exac-loading.gif); background-position: right 10px center; }
+.ExAC-main-container.disabled input[type=text] { background-color: #ececec; }
+.tagger-container.ExAC { cursor: text; font-weight: normal;}
+.tagger-container.ExAC.drop-open { background-image: url(img/icon-expander-up.png); }
+.ExAC-main-container.drop-open input[type=text] { background-image: url(img/icon-expander-up.png); }
+.ExAC-main-container input[type=text] { border: 1px solid #ccc; padding: 6px 25px 5px 12px; -webkit-appearance: none; font-size: 100%; line-height: 1.4em; }
+.tagger-container {position: relative;}
+.tagger-container .ExAC-main-container,
+.tagger-container .ExAC-main-container input[type=text]{ display: inline-block; vertical-align: top; width: auto;}
+
+/*.tagger-container > .ExAC-dropdown-main-container { margin-left: -12px;}*/
+.ExAC-dropdown-main-container { display: none; position: absolute; top: 102%; z-index: 10; width: 100%; border: 1px solid #ddd; border-top: none; box-sizing: border-box; background-color: white; cursor: pointer; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container { max-height: 200px; /*padding-left: 15px;*/ overflow-y: auto; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-loading { height: 32px; background-image: url(img/ajax-loader.gif); background-position: center center; background-repeat: no-repeat; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result { text-align: left; cursor: pointer; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result .ExAC-dropdown-result-title { padding: 6px 10px; font-size: 13px; font-weight: bold; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result.selected > .ExAC-dropdown-result-title,
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result .ExAC-dropdown-result-title:hover { background-color: #DDD; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result.not_selectable > .ExAC-dropdown-result-title:hover { background-color: transparent; cursor: default; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result .ExAC-dropdown-result-title .highlight { color: #005d99; font-weight: bold; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result > .ExAC-dropdown-result { padding-left: 30px; }
+.ExAC-dropdown-main-container .ExAC-dropdown-container .ExAC-dropdown-result .ExAC-dropdown-result .ExAC-dropdown-result-title { padding-left: 10px; font-size: 12px; font-weight: normal; }
+.ExAC-dropdown-main-container .ExAC-dropdown-add_new_record-container { border-top: 1px solid #ececec; background-color: #fff5de; font-style: italic; }
+.ExAC-dropdown-main-container .ExAC-record_not_found-container { padding: 15px 9px; padding-left: 92px; background-image: url(img/chat-warning_icon.png); background-position: 25px 15px; background-repeat: no-repeat; }
+.ExAC-dropdown-main-container .highlight_text { color: #005d99; }
+
+form .hospital_address { display: none; }
+
+/*.registration-main_container .tagger-container { padding: 8px 25px 0 12px;}*/
+
+
+.tagger-container .ExAC-main-container {margin: 0;}
+.tagger-container .ExAC-main-container input[type=text] {
+    display: inline-block;
+    vertical-align: middle;
+	margin: 6px 6px 0; 
+	padding: 0; 
+    padding-left: 6px;
+	box-shadow: none; 
+	background-image: none;
+    border: none;
+}
+
+.ExAC-dropdown-result.check > .ExAC-dropdown-result-title:before{
+	content: url(img/registrationCheck.png);
+	margin-left: -18px;
+	padding-right: 4px;
+	/*background-color: #f7f7f7;*/
+}
+.ExAC-dropdown-result.check > .ExAC-dropdown-result-title{
+	background-color: #f7f7f7;
+}
