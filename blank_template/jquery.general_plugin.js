@@ -210,8 +210,8 @@
          * @returns {object} jQuery selector of the element that plugin is initialized on (for chaining purposes)
          */
         this.destroy = function(){
-            this.$selectors.root.removeData(pluginName);
-            return this.$selectors.root;
+            this.$selectors.body.removeData(pluginName);
+            return this.$selectors.body;
         };
 
         // Initialization
@@ -314,8 +314,8 @@
 
                 if (!data || typeof data === CONST.DATA_TYPE.UNDEFINED) {
                     // If plugin is not initialized, an instance is created and is set as data to the selector
-                    var instance = new local_namespace[pluginName](options);
-                    $body.data(pluginName, instance);
+                    data = new local_namespace[pluginName](options);
+                    $body.data(pluginName, data);
                 } else {
                     // if the plugin is already initialized you can pass public method name and arguments
                     // Example: $('.some-selector').pluginName('getSettings') - returns object with the currently used settings
@@ -333,7 +333,7 @@
                 }
 
                 // returns the jquery selector for preserving chain or returns result from method
-                return result || this;
+                return result || data;
             } else {
                 throw new Error(pluginName + window.Localization.global.plugins_needed + missing_dependancies.join(',\n'));
             }

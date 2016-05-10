@@ -19,7 +19,7 @@
     }
 }(function ($) {
     'use strict';
-    var pluginName = 'blank_plugin',
+    var pluginName = 'general_plugin',
         version = 'v1.0.3',
         dependancies = [],
         local_namespace = {},
@@ -118,8 +118,8 @@
         };
 
         this.destroy = function () {
-            this.$selectors.root.removeData(pluginName);
-            return this.$selectors.root;
+            this.$selectors.body.removeData(pluginName);
+            return this.$selectors.body;
         };
 
         __construct();
@@ -212,14 +212,14 @@
 
             if (all_dependancies_loaded) {
                 var args = arguments,
-                        result;
+                    result;
 
                 var $body = $(CONST.SELECTOR.BODY),
                     data = $body.data(pluginName);
 
                 if (!data || typeof data === CONST.DATA_TYPE.UNDEFINED) {
-                    var instance = new local_namespace[pluginName](options);
-                    $body.data(pluginName, instance);
+                    data = new local_namespace[pluginName](options);
+                    $body.data(pluginName, data);
                 } else {
                     if (typeof options === CONST.DATA_TYPE.STRING && typeof data[options] === CONST.FUNCTION)
                         result = data[options].apply(data, Array.prototype.slice.call(args, 1));
@@ -233,7 +233,7 @@
                             console.error(data.renderTemplate(window.Localization.global.already_initialized, {pluginName: pluginName}));
                 }
 
-                return result || this;
+                return result || data;
             } else {
                 throw new Error(pluginName + window.Localization.global.plugins_needed + missing_dependancies.join(',\n'));
             }
