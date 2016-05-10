@@ -149,7 +149,7 @@
              * @example If there is plain text that have to be translated, the property name must be surrounded with percent sign - <strong>%some_text%</strong>
              */
             templates: {
-                example_template: '<div>|%some_text%| - [[some_value]]</div>'
+                example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
             }
         };
         

@@ -1,3 +1,12 @@
+/**
+ * TITLE: jQuery blank template plugin with AMD and localization support 
+ * AUTHOR: D-LUSiON
+ * VERSION: v1.0.2
+ * COPYRIGHT:
+ *      (2015 - 2016) D-LUSiON;
+ *      Licensed under the MIT license: http://www.opensource.org/licenses/MIT
+ */
+
 ;(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
@@ -77,7 +86,7 @@
         this.defaults = {
             lang: 'en-US',
             templates: {
-                example_template: '<div>|%some_text%| - [[some_value]]</div>'
+                example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
             }
         };
 

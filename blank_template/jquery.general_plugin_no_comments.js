@@ -1,3 +1,12 @@
+/**
+ * TITLE: jQuery general plugin blank template with AMD and localization support 
+ * AUTHOR: D-LUSiON
+ * VERSION: v1.0.3
+ * COPYRIGHT:
+ *      (2015 - 2016) D-LUSiON;
+ *      Licensed under the MIT license: http://www.opensource.org/licenses/MIT
+ */
+
 ;(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
@@ -11,7 +20,7 @@
 }(function ($) {
     'use strict';
     var pluginName = 'blank_plugin',
-        version = 'v1.0.2',
+        version = 'v1.0.3',
         dependancies = [],
         local_namespace = {},
         CONST = {
@@ -77,7 +86,7 @@
         this.defaults = {
             lang: 'en-US',
             templates: {
-                example_template: '<div>|%some_text%| - [[some_value]]</div>'
+                example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
             }
         };
 
@@ -115,6 +124,74 @@
 
         __construct();
     };
+    
+    local_namespace[pluginName].prototype = {
+        translate: function (text, custom_values, lang) {
+            var that = this;
+            if (text) {
+                if (custom_values) {
+                    return text.replace(CONST.REGEXP.EVERY_TRANSLATABLE_TEXT, function ($0, $1) {
+                        return custom_values[$1] || $0;
+                    });
+                } else {
+                    return text.replace(CONST.REGEXP.EVERY_TRANSLATABLE_TEXT, function ($0, $1) {
+                        if (window.Localization[pluginName][lang || that.settings.lang || window.navigator.language][$1])
+                            return window.Localization[pluginName][lang || that.settings.lang || window.navigator.language][$1];
+                        else
+                            return window.Localization[pluginName][lang || that.defaults.lang][$1] || CONST.EMPTY_STRING;
+                    });
+                }
+            } else {
+                if (window.console && console.error)
+                    console.error(window.Localization.global.text_not_provided);
+                return false;
+            }
+        },
+        renderTemplate: function (template, data) {
+            if (template && data) {
+                return this.translate(
+                        template.replace(CONST.REGEXP.EVERY_VALUE, function ($0, $1) {
+                            return data[$1] || CONST.EMPTY_STRING;
+                        })
+                        );
+            }
+
+            if (window.console && console.error)
+                console.error(window.Localization.global.no_template_and_data);
+            return false;
+        },
+        version: function () {
+            return version;
+        },
+        getSettings: function (property) {
+            if (property && typeof property === CONST.DATA_TYPE.STRING)
+                return this.settings[property];
+            else
+                return this.settings;
+        },
+        setSettings: function (option, value) {
+            switch (typeof option) {
+                case CONST.DATA_TYPE.STRING:
+                    if (option && value) {
+                        var new_options = {};
+                        new_options[option] = value;
+                        this.settings = $.extend(true, {}, this.settings, new_options || {});
+                        return this.$selectors.root;
+                    } else
+                        throw new Error(window.Localization.global.no_valid_option);
+                    break;
+                case CONST.DATA_TYPE.OBJECT:
+                    this.settings = $.extend(true, {}, this.settings, option || {});
+                    return this.$selectors.root;
+                    break;
+                default:
+                    if (window.console && console.error)
+                        console.error(window.Localization.global.no_valid_option);
+                    return false;
+                    break;
+            }
+        }
+    };
 
     if (!$[pluginName])
         $[pluginName] = function (options) {
@@ -141,7 +218,7 @@
                     data = $body.data(pluginName);
 
                 if (!data || typeof data === CONST.DATA_TYPE.UNDEFINED) {
-                    var instance = new local_namespace[pluginName](this, options);
+                    var instance = new local_namespace[pluginName](options);
                     $body.data(pluginName, instance);
                 } else {
                     if (typeof options === CONST.DATA_TYPE.STRING && typeof data[options] === CONST.FUNCTION)
