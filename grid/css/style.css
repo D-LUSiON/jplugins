@@ -1,0 +1,18 @@
+*,
+*::before,
+*::after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+body { font-family: Helvetica, Arial, sans-serif; font-size: 12px; }
+
+.wrapper { width: 960px; margin: 0 auto; }
+
+@media (max-width: 768px) {
+    .wrapper { width: 100%; margin: 0; }
+}
+
+.grid-container { margin-bottom: 35px; }
+.grid-container .g-row { margin-bottom: 15px; }
+[class^=g-col] { padding: 15px; border: 1px solid #e4ce9c; background-color: #f1e3bd; }
+[class^=g-col]:empty:before { display: inline; content: attr(class); }
+
+.grid_box {}

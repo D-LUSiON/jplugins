@@ -1,0 +1,16 @@
+.pickIcon-container,
+.pickIcon-container *,
+.pickIcon-container *::before,
+.pickIcon-container *::after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+.pickIcon-container { display: inline-block; position: relative; border: 1px solid #ccc; padding: 5px; vertical-align: middle; }
+.pickIcon-container > .pickIcon-selected {}
+.pickIcon-container > .pickIcon-selected > .pickIcon-icon { width: 40px; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
+.pickIcon-container > .pickIcon-selected > .pickIcon-title {}
+.pickIcon-container > .pickIcon-dropdown { display: none; position: absolute; left: -1px; top: 100%; z-index: 100; width: 251px; border: 1px solid #ccc; background-color: #fff; color: #333; }
+.pickIcon-container:hover > .pickIcon-dropdown { display: block; }
+.pickIcon-container > .pickIcon-dropdown select { display: block; width: 100%; margin-bottom: 5px; border: none; border-bottom: 1px solid #ccc; padding: 5px; }
+.pickIcon-container > .pickIcon-dropdown select:focus { outline: none; background-color: #eee; }
+.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list { padding: 5px; max-height: 300px; overflow-y: auto; }
+.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list > * { width: 40px; margin-right: 5px; margin-bottom: 5px; border: 1px solid #ccc; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; padding: 5px; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
+.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list > *:hover { background-color: #eee; cursor: pointer; }

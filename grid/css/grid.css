@@ -1,0 +1,87 @@
+.grid-container,
+.grid-container:before,
+.grid-container:after,
+.grid-container .g-row,
+.grid-container .g-row:before,
+.grid-container .g-row:after,
+.grid-container .g-row [class^=g-col-],
+.grid-container .g-row [class^=g-col-]:before,
+.grid-container .g-row [class^=g-col-]:after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+.grid-container { display: block; }
+.grid-container:after { display: block; clear: both; content: ''; }
+.grid-container .g-row { display: block; position: relative; }
+.grid-container .g-row:after { display: block; clear: both; content: ''; }
+.grid-container .g-row [class^=g-col-] { position: relative; display: block; float: left; height: 100%; }
+.grid-container .g-row [class^=g-col-][class^=push-] { right: auto; }
+.grid-container .g-row [class^=g-col-][class^=pull-] { left: auto; }
+.grid-container .g-row [class^=g-col-][class^=offset-] {}
+.grid-container .g-row .g-col-1  { width: 8.333333333333332%; }
+.grid-container .g-row .g-col-2  { width: 16.666666666666664%; }
+.grid-container .g-row .g-col-3  { width: 25%; }
+.grid-container .g-row .g-col-4  { width: 33.33333333333333%; }
+.grid-container .g-row .g-col-5  { width: 41.66666666666667%; }
+.grid-container .g-row .g-col-6  { width: 50%; }
+.grid-container .g-row .g-col-7  { width: 58.333333333333336%; }
+.grid-container .g-row .g-col-8  { width: 66.66666666666666%; }
+.grid-container .g-row .g-col-9  { width: 75%; }
+.grid-container .g-row .g-col-10 { width: 83.33333333333334%; }
+.grid-container .g-row .g-col-11 { width: 91.66666666666666%; }
+.grid-container .g-row .g-col-12 { width: 100%; }
+.grid-container .g-row .push-0  { left: auto; }
+.grid-container .g-row .push-1  { left: 8.333333333333332%; }
+.grid-container .g-row .push-2  { left: 16.666666666666664%; }
+.grid-container .g-row .push-3  { left: 25%; }
+.grid-container .g-row .push-4  { left: 33.33333333333333%; }
+.grid-container .g-row .push-5  { left: 41.66666666666667%; }
+.grid-container .g-row .push-6  { left: 50%; }
+.grid-container .g-row .push-7  { left: 58.333333333333336%; }
+.grid-container .g-row .push-8  { left: 66.66666666666666%; }
+.grid-container .g-row .push-9  { left: 75%; }
+.grid-container .g-row .push-10 { left: 83.33333333333334%; }
+.grid-container .g-row .push-11 { left: 91.66666666666666%; }
+.grid-container .g-row .push-12 { left: 100%; }
+.grid-container .g-row .pull-0  { right: auto; }
+.grid-container .g-row .pull-1  { right: 8.333333333333332%; }
+.grid-container .g-row .pull-2  { right: 16.666666666666664%; }
+.grid-container .g-row .pull-3  { right: 25%; }
+.grid-container .g-row .pull-4  { right: 33.33333333333333%; }
+.grid-container .g-row .pull-5  { right: 41.66666666666667%; }
+.grid-container .g-row .pull-6  { right: 50%; }
+.grid-container .g-row .pull-7  { right: 58.333333333333336%; }
+.grid-container .g-row .pull-8  { right: 66.66666666666666%; }
+.grid-container .g-row .pull-9  { right: 75%; }
+.grid-container .g-row .pull-10 { right: 83.33333333333334%; }
+.grid-container .g-row .pull-11 { right: 91.66666666666666%; }
+.grid-container .g-row .pull-12 { right: 100%; }
+.grid-container .g-row .offset-0  { margin-left: auto; }
+.grid-container .g-row .offset-1  { margin-left: 8.333333333333332%; }
+.grid-container .g-row .offset-2  { margin-left: 16.666666666666664%; }
+.grid-container .g-row .offset-3  { margin-left: 25%; }
+.grid-container .g-row .offset-4  { margin-left: 33.33333333333333%; }
+.grid-container .g-row .offset-5  { margin-left: 41.66666666666667%; }
+.grid-container .g-row .offset-6  { margin-left: 50%; }
+.grid-container .g-row .offset-7  { margin-left: 58.333333333333336%; }
+.grid-container .g-row .offset-8  { margin-left: 66.66666666666666%; }
+.grid-container .g-row .offset-9  { margin-left: 75%; }
+.grid-container .g-row .offset-10 { margin-left: 83.33333333333334%; }
+.grid-container .g-row .offset-11 { margin-left: 91.66666666666666%; }
+.grid-container .g-row .offset-12 { margin-left: 100%; }
+
+/*small devices*/
+@media (max-width: 768px) {
+    .grid-container .g-row [class*=g-col-] { float: none; width: 100%; }
+    .grid-container .g-row [class*=g-col-][class*=push-] { left: auto; }
+    .grid-container .g-row [class*=g-col-][class*=pull-] { right: auto; }
+    .grid-container .g-row [class*=g-col-][class*=offset-] {}
+}
+
+/*medium devices*/
+@media (max-width: 992px) {
+    
+}
+
+/*large devices*/
+@media (max-width: 1200px) {
+    
+}
