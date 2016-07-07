@@ -126,13 +126,20 @@
             filter: 'Filter...',
             remove_icon: 'Remove icon'
         },
-        'bg-BG': {}
+        'bg-BG': {
+            error: {
+                css_from_cdn: 'Използвате стилове, заредени от CDN. Моля, заредете ги от локална папка!'
+            },
+            iconset_choose: 'Изберете шрифт...',
+            filter: 'Филтриране...',
+            remove_icon: 'Премахване на иконата'
+        }
     };
 
     NS[pluginName] = function (element, options) {
         var obj = this;
         this.defaults = {
-            lang: 'en-US',
+            lang: 'bg-BG',
             templates: {
                 wrap: '<div class="pickIcon-container"/>',
                 selected_icon_wrap: '<div class="pickIcon-selected"/>',
@@ -147,6 +154,7 @@
                 example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
             },
             classes: {
+                disabled: 'pickIcon-disabled',
                 clickable: 'clickable',
                 icon_in_list: 'pickIcon-icon',
                 no_icon: 'none'
@@ -367,6 +375,11 @@
         };
 
         function _startEventListeners() {
+            if (obj.settings.clickable && !obj.$selectors.wrap.hasClass(obj.settings.classes.disabled))
+                obj.$selectors.selected_icon_container.on(CONST.EVENT.CLICK, function(){
+                    obj.$selectors.dropdown_container.slideToggle();
+                });
+            
             obj.$selectors.iconset_select.on(CONST.EVENT.CHANGE, function(){
                 obj.iconset = obj.settings.cdn[this.value];
                 obj.iconset.sys_name = this.value;
@@ -389,11 +402,6 @@
                 _setChoosenIcon(icon_data);
             });
             
-            if (obj.settings.clickable)
-                obj.$selectors.selected_icon_container.on(CONST.EVENT.CLICK, function(){
-                    obj.$selectors.dropdown_container.slideToggle();
-                });
-            
             if (obj.settings.filterable)
                 obj.$selectors.filter.on(CONST.EVENT.KEYUP, function(){
                     var $icons = obj.$selectors.icons_list.children();
@@ -409,20 +417,26 @@
             obj.$selectors.body.on(CONST.EVENT.CLICK, function(e){
                 var $this = $(e.target);
                 
-                console.log($this.is());
+                if ($this.closest(obj.$selectors.wrap).length === 0)
+                    obj.$selectors.dropdown_container.slideUp();
             });
         }
 
         this.enable = function () {
+            obj.$selectors.wrap.removeClass(obj.settings.classes.disabled);
             return this;
         };
 
         this.disable = function () {
+            obj.$selectors.wrap.addClass(obj.settings.classes.disabled);
+            obj.$selectors.dropdown_container.slideUp();
             return this;
         };
 
         this.destroy = function () {
             this.$selectors.root.removeData(pluginName);
+            this.$selectors.root.insertBefore(this.$selectors.wrap);
+            this.$selectors.wrap.empty().remove();
             return this.$selectors.root;
         };
 
