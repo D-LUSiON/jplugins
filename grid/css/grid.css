@@ -68,7 +68,7 @@
 .grid-container .g-row .offset-11 { margin-left: 91.66666666666666%; }
 .grid-container .g-row .offset-12 { margin-left: 100%; }
 
-/*small devices*/
+/*small devices - mobile phones*/
 @media (max-width: 768px) {
     .grid-container .g-row [class*=g-col-] { float: none; width: 100%; }
     .grid-container .g-row [class*=g-col-][class*=push-] { left: auto; }
@@ -76,7 +76,7 @@
     .grid-container .g-row [class*=g-col-][class*=offset-] {}
 }
 
-/*medium devices*/
+/*medium devices - tablets*/
 @media (max-width: 992px) {
     
 }

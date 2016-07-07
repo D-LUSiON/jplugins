@@ -43,11 +43,14 @@
                 LAST_OF_TYPE: ':last-of-type',
                 HIDDEN: ':hidden'
             },
-            ELEMENTS: {
-                DIV: '<div/>'
+            ELEMENT: {
+                DIV: '<div/>',
+                SELECT: '<select/>',
+                OPTION: '<option/>'
             },
             CHAR: {
-                DASH: '-'
+                DASH: '-',
+                SPACE: ' '
             },
             KEYCODE: {
                 ENTER: 13,
@@ -55,12 +58,13 @@
                 SEMICOLON: 186,
                 COMMA: 188
             },
-            EVENTS: {
+            EVENT: {
                 CLICK: 'click',
                 KEYUP: 'keyup',
                 KEYDOWN: 'keydown',
                 FOCUS: 'focus',
-                BLUR: 'blur'
+                BLUR: 'blur',
+                CHANGE: 'change'
             },
             ATTRIBUTE: {
                 LANG: 'lang',
@@ -117,7 +121,10 @@
         'en-US': {
             error: {
                 css_from_cdn: 'You\'re using stylesheet from CDN. Please, include it from local folder!'
-            }
+            },
+            iconset_choose: 'Please, select font...',
+            filter: 'Filter...',
+            remove_icon: 'Remove icon'
         },
         'bg-BG': {}
     };
@@ -128,8 +135,21 @@
             lang: 'en-US',
             templates: {
                 wrap: '<div class="pickIcon-container"/>',
+                selected_icon_wrap: '<div class="pickIcon-selected"/>',
+                selected_icon: '<span class="pickIcon-icon"/>',
+                selected_icon_title: '<span class="pickIcon-title"/>',
+                dropdown_container: '<div class="pickIcon-dropdown"/>',
+                filter: '<input type="text" class="pickIcon-filter" placeholder="|%filter%|"/>',
+                icons_list: '<div class="pickIcon-dropdown_list"/>',
+                icon: '<span class="[[sys_class]] [[selector]] [[icon_selector]][[icon]]" title="[[title]]" data-selector="[[selector]]" data-icon_selector="[[icon_selector]]" data-alias="[[alias]]"></span>',
+                icon_none: '<span class="[[sys_class]] none" title="|%remove_icon%|"></span>',
                 link: '<link rel="stylesheet" type="text/css" href="[[link]]" media="all">',
                 example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
+            },
+            classes: {
+                clickable: 'clickable',
+                icon_in_list: 'pickIcon-icon',
+                no_icon: 'none'
             },
             cdn: {
                 fontawesome: {
@@ -141,19 +161,28 @@
                 },
                 ionicons: {
                     title: 'Ionic Icons',
+                    selector: '',
+                    icon_selector: 'ion-',
                     url: 'dist/ionicons/ionicons.min.css'
 //                    url: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'
                 },
                 foundation_icons: {
                     title: 'Foundation Icons 3',
+                    selector: '',
+                    icon_selector: 'fi-',
                     url: 'dist/foundation-icons/foundation-icons.css'
 //                    url: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css'
                 },
                 themify: {
                     title: 'Themify icons',
+                    selector: '',
+                    icon_selector: 'ti-',
                     url: 'dist/themify/themify-icons.css'
                 }
-            }
+            },
+            clickable: true,
+            filterable: true,
+            show_icon_title: false
         };
 
         this.$selectors = {
@@ -173,6 +202,7 @@
         
         this.localization = window.Localization[pluginName][lang_use] || window.Localization[pluginName][this.defaults.lang];
         
+        this.iconset = null;
         this.current_icons = [];
         
         var _ = {};
@@ -185,7 +215,44 @@
         }
         
         function _buildHtml(){
+            obj.$selectors.root.wrap(obj.settings.templates.wrap);
+            obj.$selectors.wrap = obj.$selectors.root.parent();
             
+            if (obj.settings.clickable)
+                obj.$selectors.wrap.addClass(obj.settings.classes.clickable);
+            
+            obj.$selectors.selected_icon_container = $(obj.settings.templates.selected_icon_wrap).appendTo(obj.$selectors.wrap);
+            obj.$selectors.selected_icon = $(obj.settings.templates.selected_icon).appendTo(obj.$selectors.selected_icon_container);
+            
+            if (obj.$selectors.root.val() === CONST.EMPTY_STRING) {
+                obj.$selectors.selected_icon.addClass(obj.settings.classes.no_icon);
+            } else {
+                obj.$selectors.selected_icon.addClass(obj.$selectors.root.val());
+            }
+            
+            if (obj.settings.show_icon_title)
+                obj.$selectors.selected_icon_title = $(obj.settings.templates.selected_icon_title).appendTo(obj.$selectors.selected_icon_container);
+            
+            obj.$selectors.dropdown_container = $(obj.settings.templates.dropdown_container).appendTo(obj.$selectors.wrap);
+            
+            // iconsets dropdown
+            obj.$selectors.iconset_select = $(CONST.ELEMENT.SELECT).appendTo(obj.$selectors.dropdown_container);
+            $(CONST.ELEMENT.OPTION).val(CONST.EMPTY_STRING).attr({
+                'selected': true,
+                'disabled': true
+            }).text(obj.localization.iconset_choose).appendTo(obj.$selectors.iconset_select);
+            
+            for (var font in obj.settings.cdn) {
+                $(CONST.ELEMENT.OPTION).val(font).text(obj.settings.cdn[font].title).appendTo(obj.$selectors.iconset_select);
+            }
+            
+            //icons filter
+            if (obj.settings.filterable) {
+                obj.$selectors.filter = $(obj.translate(obj.settings.templates.filter)).hide().appendTo(obj.$selectors.dropdown_container);
+            }
+            
+            // icons list
+            obj.$selectors.icons_list = $(obj.settings.templates.icons_list).appendTo(obj.$selectors.dropdown_container);
         }
         
         this.updateCdnIcons = function(){
@@ -193,10 +260,72 @@
                 if (this.$selectors.head.find('[href="' + this.settings.cdn[font].url + '"]').length === 0) {
                     $(obj.renderTemplate(this.settings.templates.link, {
                         link: this.settings.cdn[font].url
-                    } )).insertAfter(this.$selectors.head.find('link' + CONST.SELECTOR.LAST_OF_TYPE));
+                    })).insertAfter(this.$selectors.head.find('link' + CONST.SELECTOR.LAST_OF_TYPE));
                 }
             }
         };
+        
+        function _setFontIcons(font){
+            obj.current_icons = obj.getSelectorsForFont(font);
+            
+            // add "remove icon" icon
+            var html = obj.renderTemplate(obj.settings.templates.icon_none, {
+                            sys_class: obj.settings.classes.icon_in_list
+                        });
+            
+            // add the rest of the icons
+            for (var i = 0, max = obj.current_icons.length; i < max; i++) {
+                for (var j = 0, max1 = obj.current_icons[i].alias.length; j < max1; j++) {
+                    var icon = obj.current_icons[i].alias[j].replace(obj.iconset.icon_selector, CONST.EMPTY_STRING);
+                    
+                    // add icon if is the first alias
+                    if ((obj.iconset.icon_selector + icon) === obj.current_icons[i].alias[0])
+//                    if (obj.current_icons[i].alias[0].indexOf(obj.iconset.icon_selector + icon) === 0)
+                        html += obj.renderTemplate(obj.settings.templates.icon, {
+                                    sys_class: obj.settings.classes.icon_in_list,
+                                    selector: obj.iconset.selector,
+                                    icon_selector: obj.iconset.icon_selector,
+                                    icon: icon,
+                                    title: icon,
+                                    alias: obj.current_icons[i].alias.join(CONST.CHAR.SPACE)
+                                });
+                }
+            }
+            
+            $(html).appendTo(obj.$selectors.icons_list.empty());
+        }
+        
+        function _setChoosenIcon(icon){
+            obj.$selectors.selected_icon
+                    .attr(CONST.ATTRIBUTE.CLASS, CONST.EMPTY_STRING);
+            
+            if (icon.selector)
+                obj.$selectors.selected_icon
+                    .addClass(icon.selector);
+            
+            
+            if (icon.icon_selector)
+                obj.$selectors.selected_icon
+                    .addClass(icon.icon_selector + icon.title);
+            
+            if (obj.$selectors.selected_icon_title)
+                obj.$selectors.selected_icon_title
+                    .text(icon.title);
+            
+            var value = obj.$selectors.selected_icon.attr(CONST.ATTRIBUTE.CLASS);
+            
+            obj.$selectors.selected_icon
+                    .addClass($(obj.settings.templates.selected_icon).attr(CONST.ATTRIBUTE.CLASS));
+            
+            if (value === CONST.EMPTY_STRING)
+                obj.$selectors.selected_icon
+                    .addClass(obj.settings.classes.no_icon);
+            
+            obj.$selectors.root.val(value);
+            
+            if (obj.settings.clickable)
+                obj.$selectors.dropdown_container.slideUp();
+        }
         
         this.getSelectorsForFont = function(font){
             var stylesheet;
@@ -213,21 +342,76 @@
             var icons = [];
             for (var i = 0, max = stylesheet.rules.length; i < max; i++) {
                 if (/^\.(.+?)::before/.test(stylesheet.rules[i].selectorText)) {
-                    var selector = stylesheet.rules[i].selectorText.split(/,\s{0,}/gi).map(function(val){
-                        return val.replace(/^\./, CONST.EMPTY_STRING).replace(/:{1,2}(.+?)$/, CONST.EMPTY_STRING);
-                    });
-                    icons.push({
-                        icon: selector[0],
-                        alias: selector
-                    });
+                    var is_icon = false;
+                    
+                    for (var j = 0, max1 = stylesheet.rules[i].style.length; j < max1; j++) {
+                        if (stylesheet.rules[i].style[j] === 'content') {
+                            is_icon = true;
+                        }
+                    }
+                    
+                    if (is_icon) {
+                        var selector = stylesheet.rules[i].selectorText.split(/,\s{0,}/gi).map(function(val){
+                            return val.replace(/^\./, CONST.EMPTY_STRING).replace(/:{1,2}(.+?)$/, CONST.EMPTY_STRING);
+                        });
+                        
+                        icons.push({
+                            icon: selector[0],
+                            alias: selector
+                        });
+                    }
                 }
             }
-            console.log(icons);
                 
             return icons;
         };
 
-        function _startEventListeners() {}
+        function _startEventListeners() {
+            obj.$selectors.iconset_select.on(CONST.EVENT.CHANGE, function(){
+                obj.iconset = obj.settings.cdn[this.value];
+                obj.iconset.sys_name = this.value;
+                
+                if (obj.settings.filterable) {
+                    if (this.value === CONST.EMPTY_STRING) {
+                        obj.$selectors.filter.hide();
+                    } else {
+                        obj.$selectors.filter.val(CONST.EMPTY_STRING).show();
+                    }
+                }
+                    
+                _setFontIcons(this.value);
+            });
+            
+            obj.$selectors.dropdown_container.on(CONST.EVENT.CLICK, CONST.SELECTOR.CLASS + obj.settings.classes.icon_in_list, function(){
+                var icon_data = $(this).data();
+                icon_data.title = this.title;
+                
+                _setChoosenIcon(icon_data);
+            });
+            
+            if (obj.settings.clickable)
+                obj.$selectors.selected_icon_container.on(CONST.EVENT.CLICK, function(){
+                    obj.$selectors.dropdown_container.slideToggle();
+                });
+            
+            if (obj.settings.filterable)
+                obj.$selectors.filter.on(CONST.EVENT.KEYUP, function(){
+                    var $icons = obj.$selectors.icons_list.children();
+                    
+                    if (this.value === CONST.EMPTY_STRING) {
+                        $icons.show();
+                    } else {
+                        $icons.hide();
+                        $icons.filter('[data-alias*="' + this.value + '"]').show();
+                    }
+                });
+            
+            obj.$selectors.body.on(CONST.EVENT.CLICK, function(e){
+                var $this = $(e.target);
+                
+                console.log($this.is());
+            });
+        }
 
         this.enable = function () {
             return this;

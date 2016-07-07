@@ -5,12 +5,18 @@
 
 .pickIcon-container { display: inline-block; position: relative; border: 1px solid #ccc; padding: 5px; vertical-align: middle; }
 .pickIcon-container > .pickIcon-selected {}
-.pickIcon-container > .pickIcon-selected > .pickIcon-icon { width: 40px; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
-.pickIcon-container > .pickIcon-selected > .pickIcon-title {}
-.pickIcon-container > .pickIcon-dropdown { display: none; position: absolute; left: -1px; top: 100%; z-index: 100; width: 251px; border: 1px solid #ccc; background-color: #fff; color: #333; }
-.pickIcon-container:hover > .pickIcon-dropdown { display: block; }
-.pickIcon-container > .pickIcon-dropdown select { display: block; width: 100%; margin-bottom: 5px; border: none; border-bottom: 1px solid #ccc; padding: 5px; }
+.pickIcon-container > .pickIcon-selected > .pickIcon-icon { display: inline-block; width: 40px; min-height: 1.2em; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
+.pickIcon-container > .pickIcon-selected > .pickIcon-title { margin-right: 10px; }
+.pickIcon-container > .pickIcon-dropdown { display: none; position: absolute; left: -1px; top: 100%; z-index: 100; width: 254px; border: 1px solid #ccc; background-color: #fff; color: #333; }
+.pickIcon-container:not(.clickable):hover > .pickIcon-dropdown { display: block; }
+.pickIcon-container.clickable > .pickIcon-selected { cursor: pointer; }
+.pickIcon-container > .pickIcon-dropdown select { display: block; width: 100%; margin-bottom: -1px; border: none; border-bottom: 1px solid #ccc; padding: 5px;}
 .pickIcon-container > .pickIcon-dropdown select:focus { outline: none; background-color: #eee; }
-.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list { padding: 5px; max-height: 300px; overflow-y: auto; }
-.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list > * { width: 40px; margin-right: 5px; margin-bottom: 5px; border: 1px solid #ccc; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; padding: 5px; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
+.pickIcon-container > .pickIcon-dropdown input[type=text].pickIcon-filter { display: block; width: 100%; border: none; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 6px; }
+.pickIcon-container > .pickIcon-dropdown input[type=text].pickIcon-filter:focus { outline: none; background-color: #eee; }
+.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list { padding: 5px; max-height: 300px; overflow-y: auto; margin-top: 6px; }
+.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list:empty { padding: 0; margin-top: 0; }
+.pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list > * { display: inline-block; width: 40px; margin-right: 5px; margin-bottom: 5px; border: 1px solid #ccc; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; padding: 5px; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
 .pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list > *:hover { background-color: #eee; cursor: pointer; }
+.pickIcon-container .pickIcon-icon.none { display: table; float: left; line-height: normal; }
+.pickIcon-container .pickIcon-icon.none:before { content: 'no icon'; display: table-cell; height: 30px; padding: 0 4px; font-size: 10px; word-break: break-word; vertical-align: middle; }
