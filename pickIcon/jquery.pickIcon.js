@@ -336,7 +336,7 @@
         }
         
         this.getSelectorsForFont = function(font){
-            var stylesheet;
+            var stylesheet, cssRules;
             for (var i = 0, max = document.styleSheets.length; i < max; i++)
                 if (document.styleSheets[i].href.indexOf(this.settings.cdn[font].url) > -1)
                     stylesheet = document.styleSheets[i];
@@ -348,18 +348,21 @@
             }
             
             var icons = [];
-            for (var i = 0, max = stylesheet.rules.length; i < max; i++) {
-                if (/^\.(.+?)::before/.test(stylesheet.rules[i].selectorText)) {
+            
+            cssRules = stylesheet.rules || stylesheet.cssRules;
+            
+            for (var i = 0, max = cssRules.length; i < max; i++) {
+                if (/^\.(.+?)::before/.test(cssRules[i].selectorText)) {
                     var is_icon = false;
                     
-                    for (var j = 0, max1 = stylesheet.rules[i].style.length; j < max1; j++) {
-                        if (stylesheet.rules[i].style[j] === 'content') {
+                    for (var j = 0, max1 = cssRules[i].style.length; j < max1; j++) {
+                        if (cssRules[i].style[j] === 'content') {
                             is_icon = true;
                         }
                     }
                     
                     if (is_icon) {
-                        var selector = stylesheet.rules[i].selectorText.split(/,\s{0,}/gi).map(function(val){
+                        var selector = cssRules[i].selectorText.split(/,\s{0,}/gi).map(function(val){
                             return val.replace(/^\./, CONST.EMPTY_STRING).replace(/:{1,2}(.+?)$/, CONST.EMPTY_STRING);
                         });
                         
