@@ -145,7 +145,7 @@
     NS[pluginName] = function (element, options) {
         var obj = this;
         this.defaults = {
-            lang: 'bg-BG',
+            lang: 'en-US',
             templates: {
                 wrap: '<div class="pickIcon-container"/>',
                 selected_icon_wrap: '<div class="pickIcon-selected"/>',
@@ -154,10 +154,9 @@
                 dropdown_container: '<div class="pickIcon-dropdown"/>',
                 filter: '<input type="text" class="pickIcon-filter" placeholder="|%filter%|"/>',
                 icons_list: '<div class="pickIcon-dropdown_list"/>',
-                icon: '<span class="[[sys_class]] [[selector]] [[icon_selector]][[icon]]" title="[[title]]" data-selector="[[selector]]" data-icon_selector="[[icon_selector]]" data-alias="[[alias]]"></span>',
-                icon_none: '<span class="[[sys_class]] none" title="|%remove_icon%|"></span>',
-                link: '<link rel="stylesheet" type="text/css" href="[[link]]" media="all" crossorigin="anonymous">',
-                example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
+                icon: '<span class="[[sys_class]] [[selector]] [[icon_selector]][[icon]]" title="[[title]]" data-selector="[[selector]]" data-icon_selector="[[icon_selector]]" data-alias="[[alias]]"/>',
+                icon_none: '<span class="[[sys_class]] none" title="|%remove_icon%|"/>',
+                link: '<link rel="stylesheet" type="text/css" href="[[link]]" media="all" crossorigin="anonymous">'
             },
             classes: {
                 disabled: 'pickIcon-disabled',
@@ -170,7 +169,6 @@
                     title: 'FontAwesome',
                     selector: 'fa',
                     icon_selector: 'fa-',
-                    set_icon: 'font-awesome',
 //                    url: 'dist/font-awesome/font-awesome.min.css'
                     url: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'
                 },
@@ -178,7 +176,6 @@
                     title: 'Ionic Icons',
                     selector: '',
                     icon_selector: 'ion-',
-                    set_icon: 'ios-ionic-outline',
 //                    url: 'dist/ionicons/ionicons.min.css'
                     url: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'
                 },
@@ -186,7 +183,6 @@
                     title: 'Foundation Icons 3',
                     selector: '',
                     icon_selector: 'fi-',
-                    set_icon: '',
 //                    url: 'dist/foundation-icons/foundation-icons.css'
                     url: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css'
                 },
@@ -194,7 +190,6 @@
                     title: 'Themify icons',
                     selector: '',
                     icon_selector: 'ti-',
-                    set_icon: 'themify-logo',
                     url: 'dist/themify/themify-icons.css'
                 }
             },
