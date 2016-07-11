@@ -1,49 +1,49 @@
 # jquery.pickIcon.js documentation
 
-<h2>Description:</h2>
+## Description:
 <div>
     There are a lot of icon fonts. With this plugin you can select an icon from font and set it to input.
 </div>
 <h2>Usage:</h2>
 <div>
     <p>First you have to include necessary stylesheet:</p>
-    <pre>
+    ```html
     <link rel="stylesheet" type="text/css" href="path/to/your/css/jquery.pickIcon.css" media="all">
-    </pre>
+    ```
 </div>
 <div>
     <p>Then add jQuery and plugin:</p>
-    <pre>
+    ```html
     <script type="text/javascript" src="path/to/your/js/jquery.js"></script>
+    
     <script type="text/javascript" src="path/to/your/js/jquery.pickIcon.js"></script>
-    </pre>
+    ```
 </div>
 <div>
     <p>After that create the markup:</p>
-    <pre>
+    ```html
     <input type="hidden" value="" class="selector_of_your_choosing"/>
-    </pre>
+    ```
 </div>
 <div>
     <p>And finally initialize plugin on an element:</p>
-    <pre>
+    ```html
     <script type="text/javascript">
         $(function(){
             $('.selector_of_your_choosing').pickIcon();
         });
     </script>
-    </pre>
+    ```
 </div>
-<h2>API:</h2>
+## API:
+
+### Plugin options:
 <div>
     <table style="width: 100%; border-collapse: collapse;">
         <tr>
-            <th colspan="6">Plugin options</th>
-        </tr>
-        <tr>
-            <th>Option</th>
-            <th>data type</th>
-            <th>Default value</th>
+            <th style="width: 10%;">Option</th>
+            <th style="width: 10%;">data type</th>
+            <th style="width: 10%;">Default value</th>
             <th>Values</th>
             <th>Description</th>
             <th>Example</th>
