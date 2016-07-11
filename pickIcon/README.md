@@ -7,13 +7,13 @@
 <h2>Usage:</h2>
 <div>
     <p>First you have to include necessary stylesheet:</p>
-    ```html
+    ```
     <link rel="stylesheet" type="text/css" href="path/to/your/css/jquery.pickIcon.css" media="all">
     ```
 </div>
 <div>
     <p>Then add jQuery and plugin:</p>
-    ```html
+    ```
     <script type="text/javascript" src="path/to/your/js/jquery.js"></script>
     
     <script type="text/javascript" src="path/to/your/js/jquery.pickIcon.js"></script>
@@ -21,18 +21,16 @@
 </div>
 <div>
     <p>After that create the markup:</p>
-    ```html
+    ```
     <input type="hidden" value="" class="selector_of_your_choosing"/>
     ```
 </div>
 <div>
     <p>And finally initialize plugin on an element:</p>
-    ```html
-    <script type="text/javascript">
+    ```javascript
         $(function(){
             $('.selector_of_your_choosing').pickIcon();
         });
-    </script>
     ```
 </div>
 ## API:
