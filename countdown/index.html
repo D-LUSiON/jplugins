@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>jQuery Icon picker</title>
+        <title>jQuery Countdown</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
         <link rel="stylesheet" type="text/css" href="demo.css" media="all">
-        <link rel="stylesheet" type="text/css" href="jquery.pickIcon.css" media="all">
-        <script type="text/javascript" src="jquery.pickIcon.js"></script>
+        <script type="text/javascript" src="jquery.countdown.js"></script>
     </head>
-    <body>
+    <body lang="en-US">
         <div class="wrapper">
-            <h1>PickIcon demo</h1>
+            <h1>Countdown demo</h1>
             <div class="demo-container">
-                <input type="hidden" value="" class="iconPicker" data-allowed_sets="fontawesome,themify"/>
+                <div class="countdown" data-date="2016-09-15 12:00" data-format="#TimeTemplate"></div>
             </div>
         </div>
+        <template id="TimeTemplate">
+            DD days, HH hours, mm minutes and ss seconds left until FD
+        </template>
         <script type="text/javascript">
             (function($, window, document){
                 $(function(){
-                    $('.iconPicker').pickIcon();
+                    $('.countdown').countdown();
                 });
             })(jQuery, window, document);
         </script>

@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Digital-7 mono';
+  src: url('dist/digital-7-mono.eot'); /* IE9 Compat Modes */
+  src: url('dist/digital-7-mono.woff') format('woff'), /* Pretty Modern Browsers */
+       url('dist/digital-7-mono.ttf')  format('truetype') /* Safari, Android, iOS */
+}
+
+*,
+*::before,
+*::after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; }
+
+body { margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; font-size: 12px; }
+h1 {}
+.wrapper { width: 960px; margin: 0 auto; }
+
+.countdown { font-family: 'Digital-7 mono', monospace; font-size: 14px; }

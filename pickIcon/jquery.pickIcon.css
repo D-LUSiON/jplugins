@@ -3,9 +3,14 @@
 .pickIcon-container *::before,
 .pickIcon-container *::after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
+.pickIcon-container .pickIcon-icon.none { display: table; float: left; line-height: normal; }
+.pickIcon-container .pickIcon-icon.none:before { content: 'no icon'; display: table-cell; height: 30px; padding: 0 4px; font-size: 10px; line-height: 1.2em; vertical-align: middle; word-break: break-word; }
+
 .pickIcon-container { display: inline-block; position: relative; border: 1px solid #ccc; padding: 5px; vertical-align: middle; }
 .pickIcon-container > .pickIcon-selected {}
-.pickIcon-container > .pickIcon-selected > .pickIcon-icon { display: inline-block; width: 40px; min-height: 1.2em; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
+.pickIcon-container > .pickIcon-selected > .pickIcon-icon { display: table; width: 80px; min-height: 70px; font-size: 46px; line-height: 70px; text-align: center; vertical-align: middle; }
+.pickIcon-container > .pickIcon-selected > .pickIcon-icon.none {}
+.pickIcon-container > .pickIcon-selected > .pickIcon-icon.none:before { padding: 8px; color: #888; font-size: 20px; }
 .pickIcon-container > .pickIcon-selected > .pickIcon-title { margin-right: 10px; }
 .pickIcon-container > .pickIcon-dropdown { display: none; position: absolute; left: -1px; top: 100%; z-index: 100; width: 254px; border: 1px solid #ccc; background-color: #fff; color: #333; }
 .pickIcon-container:not(.clickable):hover > .pickIcon-dropdown { display: block; }
@@ -18,5 +23,3 @@
 .pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list:empty { padding: 0; margin-top: 0; }
 .pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list > * { display: inline-block; width: 40px; margin-right: 5px; margin-bottom: 5px; border: 1px solid #ccc; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; padding: 5px; font-size: 18px; line-height: 30px; text-align: center; vertical-align: middle; }
 .pickIcon-container > .pickIcon-dropdown .pickIcon-dropdown_list > *:hover { background-color: #eee; cursor: pointer; }
-.pickIcon-container .pickIcon-icon.none { display: table; float: left; line-height: normal; }
-.pickIcon-container .pickIcon-icon.none:before { content: 'no icon'; display: table-cell; height: 30px; padding: 0 4px; font-size: 10px; word-break: break-word; vertical-align: middle; }

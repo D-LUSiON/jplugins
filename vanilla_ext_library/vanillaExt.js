@@ -208,4 +208,87 @@
             enumerable : false
         });
     
+    /**
+     * Converts RGB values to HEX color
+     * @param {integer} r Red value
+     * @param {integer} g Green value
+     * @param {integer} b Blue value
+     * @returns {String}
+     */
+    window.rgbToHex = function(r, g, b) {
+        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    };
+    
+    /**
+     * Converts HEX color to RGB
+     * @param {string} hex HEX color value
+     * @returns {object}
+     */
+    window.hexToRgb = function(hex){
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : {};
+    };
+    
+    if (!Date.prototype.hasOwnProperty('formatDate')) {
+        Date.prototype.localization = {
+            months: {
+                full: {
+                    'en-US': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    'bg-BG': ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември']
+                },
+                short: {
+                    'en-US': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    'bg-BG': ['Яну', 'Фев', 'Мар', 'Апр', 'Май', 'Юни', 'Юли', 'Авг', 'Сеп', 'Окт', 'Ное', 'Дек']
+                }
+            },
+            weekdays: {
+                full: {
+                    'en-US': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    'bg-BG': ['Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота', 'Неделя']
+                },
+                short: {
+                    'en-US': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    'bg-BG': ['Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб', 'Нед']
+                }
+            }
+        };
+        
+        Date.prototype.formatDate = function(format, locale){
+            if (!format)
+                format = 'YYYY-MM-DD HH:mm:ss, i';
+
+            var self = this,
+                date_str = format,
+                lang = locale || document.getElementsByTagName('body')[0].getAttribute('lang'),
+                date_elements = {
+                    YYYY: self.getFullYear(),
+                    YY: self.getFullYear().toString().substr(2,2),
+                    MMMM: self.localization.months.full[lang || navigator.language][self.getMonth()],
+                    MMM: self.localization.months.short[lang || navigator.language][self.getMonth()],
+                    MM: ((self.getMonth() + 1 < 10)? '0' + (self.getMonth() + 1 ) : (self.getMonth() + 1)),
+                    M: self.getMonth() + 1,
+                    DD: ((self.getDate() < 10)? '0' + self.getDate() : self.getDate()),
+                    D: self.getDate(),
+                    HH: ((self.getHours() < 10) ? '0' + self.getHours() : self.getHours()),
+                    H: self.getHours(),
+                    mm: ((self.getMinutes() < 10) ? '0' + self.getMinutes() : self.getMinutes()),
+                    m: self.getMinutes(),
+                    ss: ((self.getSeconds() < 10) ? '0' + self.getSeconds() : self.getSeconds()),
+                    s: self.getSeconds(),
+                    ms: self.getMilliseconds(),
+                    ii: self.localization.weekdays.full[lang || navigator.language][self.getDay() - 1],
+                    i: self.localization.weekdays.short[lang || navigator.language][self.getDay() - 1]
+                };
+
+            return  date_str.replace(/\w{1,}/g, function ($0, $1) {
+                return date_elements[$0] || $0;
+            });
+        };
+        
+    }
+    
 })(jQuery, window);

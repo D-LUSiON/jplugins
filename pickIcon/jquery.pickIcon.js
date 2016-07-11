@@ -1,7 +1,7 @@
 /**
  * TITLE: Font Icon picker
  * AUTHOR: D-LUSiON
- * VERSION: v1.0.0
+ * VERSION: v1.0.1
  * COPYRIGHT:
  *      (2015 - 2016) D-LUSiON;
  *      Licensed under the MIT license: http://www.opensource.org/licenses/MIT
@@ -9,6 +9,11 @@
 
 /**
  * CHANGELOG
+ * 
+ * 1.0.1
+ *  - Fixed CDN loading - if proper header is present, there is no problem;
+ *  - Added "allowed fonts" - you can specify witch fonts to be shown in dropdown menu;
+ *  - Larger style for choosen icon;
  * 
  * 1.0.0 - Initial build
  */
@@ -64,7 +69,8 @@
                 KEYDOWN: 'keydown',
                 FOCUS: 'focus',
                 BLUR: 'blur',
-                CHANGE: 'change'
+                CHANGE: 'change',
+                LOAD: 'load'
             },
             ATTRIBUTE: {
                 LANG: 'lang',
@@ -120,7 +126,7 @@
     window.Localization[pluginName] = {
         'en-US': {
             error: {
-                css_from_cdn: 'You\'re using stylesheet from CDN. Please, include it from local folder!'
+                css_from_cdn: 'You\'re using stylesheet from CDN. If the server does not send "Access-Control-Allow-Origin: *" header, they can\'t be loaded. Please, include it from local folder!'
             },
             iconset_choose: 'Please, select font...',
             filter: 'Filter...',
@@ -128,7 +134,7 @@
         },
         'bg-BG': {
             error: {
-                css_from_cdn: 'Използвате стилове, заредени от CDN. Моля, заредете ги от локална папка!'
+                css_from_cdn: 'Използвате стилове, заредени от CDN. Ако сървъра не изпраща "Access-Control-Allow-Origin: *" хедър, те не могат да бъдат заредени. Моля, заредете ги от локална папка!'
             },
             iconset_choose: 'Изберете шрифт...',
             filter: 'Филтриране...',
@@ -150,7 +156,7 @@
                 icons_list: '<div class="pickIcon-dropdown_list"/>',
                 icon: '<span class="[[sys_class]] [[selector]] [[icon_selector]][[icon]]" title="[[title]]" data-selector="[[selector]]" data-icon_selector="[[icon_selector]]" data-alias="[[alias]]"></span>',
                 icon_none: '<span class="[[sys_class]] none" title="|%remove_icon%|"></span>',
-                link: '<link rel="stylesheet" type="text/css" href="[[link]]" media="all">',
+                link: '<link rel="stylesheet" type="text/css" href="[[link]]" media="all" crossorigin="anonymous">',
                 example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
             },
             classes: {
@@ -164,27 +170,31 @@
                     title: 'FontAwesome',
                     selector: 'fa',
                     icon_selector: 'fa-',
-                    url: 'dist/font-awesome/font-awesome.min.css'
-//                    url: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'
+                    set_icon: 'font-awesome',
+//                    url: 'dist/font-awesome/font-awesome.min.css'
+                    url: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'
                 },
                 ionicons: {
                     title: 'Ionic Icons',
                     selector: '',
                     icon_selector: 'ion-',
-                    url: 'dist/ionicons/ionicons.min.css'
-//                    url: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'
+                    set_icon: 'ios-ionic-outline',
+//                    url: 'dist/ionicons/ionicons.min.css'
+                    url: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'
                 },
                 foundation_icons: {
                     title: 'Foundation Icons 3',
                     selector: '',
                     icon_selector: 'fi-',
-                    url: 'dist/foundation-icons/foundation-icons.css'
-//                    url: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css'
+                    set_icon: '',
+//                    url: 'dist/foundation-icons/foundation-icons.css'
+                    url: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css'
                 },
                 themify: {
                     title: 'Themify icons',
                     selector: '',
                     icon_selector: 'ti-',
+                    set_icon: 'themify-logo',
                     url: 'dist/themify/themify-icons.css'
                 }
             },
@@ -212,10 +222,14 @@
         
         this.iconset = null;
         this.current_icons = [];
+        this.allowed_sets = [];
         
         var _ = {};
 
         function __construct() {
+            if (obj.$selectors.root.data().allowed_sets)
+                obj.allowed_sets = obj.$selectors.root.data().allowed_sets.split(',');
+            
             obj.updateCdnIcons();
             _buildHtml();
             _startEventListeners();
@@ -251,7 +265,8 @@
             }).text(obj.localization.iconset_choose).appendTo(obj.$selectors.iconset_select);
             
             for (var font in obj.settings.cdn) {
-                $(CONST.ELEMENT.OPTION).val(font).text(obj.settings.cdn[font].title).appendTo(obj.$selectors.iconset_select);
+                if (obj.allowed_sets.length === 0 || ( obj.allowed_sets.length > 0 && obj.allowed_sets.indexOf(font) > -1))
+                    $(CONST.ELEMENT.OPTION).val(font).text(obj.settings.cdn[font].title).appendTo(obj.$selectors.iconset_select);
             }
             
             //icons filter
@@ -265,11 +280,12 @@
         
         this.updateCdnIcons = function(){
             for (var font in this.settings.cdn) {
-                if (this.$selectors.head.find('[href="' + this.settings.cdn[font].url + '"]').length === 0) {
-                    $(obj.renderTemplate(this.settings.templates.link, {
-                        link: this.settings.cdn[font].url
-                    })).insertAfter(this.$selectors.head.find('link' + CONST.SELECTOR.LAST_OF_TYPE));
-                }
+                if (obj.allowed_sets.length === 0 || ( obj.allowed_sets.length > 0 && obj.allowed_sets.indexOf(font) > -1))
+                    if (this.$selectors.head.find('[href="' + this.settings.cdn[font].url + '"]').length === 0) {
+                        $(obj.renderTemplate(this.settings.templates.link, {
+                            link: this.settings.cdn[font].url
+                        })).insertAfter(this.$selectors.head.find('link' + CONST.SELECTOR.LAST_OF_TYPE));
+                    }
             }
         };
         
@@ -288,7 +304,6 @@
                     
                     // add icon if is the first alias
                     if ((obj.iconset.icon_selector + icon) === obj.current_icons[i].alias[0])
-//                    if (obj.current_icons[i].alias[0].indexOf(obj.iconset.icon_selector + icon) === 0)
                         html += obj.renderTemplate(obj.settings.templates.icon, {
                                     sys_class: obj.settings.classes.icon_in_list,
                                     selector: obj.iconset.selector,
@@ -343,7 +358,7 @@
             
             if (stylesheet.rules === null) {
                 if (window.console && console.error)
-                    console.error(localization.error.css_from_cdn);
+                    console.error(obj.localization.error.css_from_cdn);
                 return false;
             }
             
