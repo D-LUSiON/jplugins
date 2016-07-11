@@ -85,7 +85,7 @@ And finally initialize plugin on an element:
 ## API:
 
 ### Plugin options:
-_(string)_ **lang**: 'en-US'
+_(string)_ **lang**: 'en-US'<br/>
 Localization language - it can be any language code. Preferably, it have to be as defined by [W3](https://www.w3.org/International/articles/language-tags/) in format 'language'-'region'
 ```javascript
 $('.iconPicker').pickIcon({
@@ -93,7 +93,7 @@ $('.iconPicker').pickIcon({
 });
 ```
 
-_(bool)_ **clickable**: true
+_(bool)_ **clickable**: true<br/>
 How to open dropdown - _(true)_ on click or _(false)_ - on mouse over
 ```javascript
 $('.iconPicker').pickIcon({
@@ -101,7 +101,7 @@ $('.iconPicker').pickIcon({
 });
 ```
 
-_(bool)_ **filterable**: true
+_(bool)_ **filterable**: true<br/>
 If you don't want to show the "filter" input field in dropdown, set this to _false_
 ```javascript
 $('.iconPicker').pickIcon({
@@ -109,10 +109,84 @@ $('.iconPicker').pickIcon({
 });
 ```
 
-_(bool)_ **show_icon_title**: false
+_(bool)_ **show_icon_title**: false<br/>
 If you wish to show the title of the choosen icon, set this to _true_
 ```javascript
 $('.iconPicker').pickIcon({
     show_icon_title: true
+});
+```
+
+_(object)_ **cdn**: { ... }<br/>
+Container object for icon libraries. Look ahead for it's keys...
+```javascript
+$('.iconPicker').pickIcon({
+    cdn: {
+        ...
+    }
+});
+```
+
+_(object)_ **cdn[_font_key_]**: { ... }<br/>
+Key of the font. For example, if you want to include "GlyphIcons" it might be "glyphicons" or "gi" (of your choosing).
+```javascript
+$('.iconPicker').pickIcon({
+    cdn: {
+        glyphicons: {
+            ...
+        }
+    }
+});
+```
+
+_(string)_ **cdn[_font_key_].title**: 'Title of the icon font library'<br/>
+The title of the library that is going to be shown to the users
+```javascript
+$('.iconPicker').pickIcon({
+    cdn: {
+        glyphicons: {
+            title: 'GlyphIcons'
+        }
+    }
+});
+```
+
+_(string)_ **cdn[_font_key_].selector**: 'selector_class'<br/>
+Some icon fonts have main selector class, for example:
+```html
+<span class="fa fa-times"></span>
+```
+You can define it here. If the font does not have, leave it empty string.
+```javascript
+$('.iconPicker').pickIcon({
+    cdn: {
+        glyphicons: {
+            selector: 'glyphicon'
+        }
+    }
+});
+```
+
+_(string)_ **cdn[_font_key_].icon_selector**: 'icon_selector_class_prefix'<br/>
+Prefix of the icon class. For example, FontAwesome's prefix is "fa-", GlyphIcons is "glyphicon-"
+```javascript
+$('.iconPicker').pickIcon({
+    cdn: {
+        glyphicons: {
+            icon_selector: 'glyphicon-'
+        }
+    }
+});
+```
+
+_(string)_ **cdn[_font_key_].url**: 'some_url'<br/>
+Path to the font CSS. It can be local or it can be from CDN. If it's on another domain (CDN) the server have to provide **"Access-Control-Allow-Origin: *"** header.
+```javascript
+$('.iconPicker').pickIcon({
+    cdn: {
+        glyphicons: {
+            url: 'path/to/your/css/glyphicons.css'
+        }
+    }
 });
 ```
