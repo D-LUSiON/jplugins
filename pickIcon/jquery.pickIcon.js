@@ -123,29 +123,65 @@
         };
     }
 
-    window.Localization[pluginName] = {
-        'en-US': {
-            error: {
-                css_from_cdn: 'You\'re using stylesheet from CDN. If the server does not send "Access-Control-Allow-Origin: *" header, they can\'t be loaded. Please, include it from local folder!'
+    if (!window.Localization[pluginName])
+        window.Localization[pluginName] = {
+            'en-US': {
+                error: {
+                    css_from_cdn: 'You\'re using stylesheet from CDN. If the server does not send "Access-Control-Allow-Origin: *" header, they can\'t be loaded. Please, include it from local folder!'
+                },
+                iconset_choose: 'Please, select font...',
+                filter: 'Filter...',
+                remove_icon: 'Remove icon'
             },
-            iconset_choose: 'Please, select font...',
-            filter: 'Filter...',
-            remove_icon: 'Remove icon'
-        },
-        'bg-BG': {
-            error: {
-                css_from_cdn: 'Използвате стилове, заредени от CDN. Ако сървъра не изпраща "Access-Control-Allow-Origin: *" хедър, те не могат да бъдат заредени. Моля, заредете ги от локална папка!'
-            },
-            iconset_choose: 'Изберете шрифт...',
-            filter: 'Филтриране...',
-            remove_icon: 'Премахване на иконата'
-        }
-    };
+            'bg-BG': {
+                error: {
+                    css_from_cdn: 'Използвате стилове, заредени от CDN. Ако сървъра не изпраща "Access-Control-Allow-Origin: *" хедър, те не могат да бъдат заредени. Моля, заредете ги от локална папка!'
+                },
+                iconset_choose: 'Изберете шрифт...',
+                filter: 'Филтриране...',
+                remove_icon: 'Премахване на иконата'
+            }
+        };
 
     NS[pluginName] = function (element, options) {
         var obj = this;
         this.defaults = {
             lang: 'en-US',
+            clickable: true,
+            filterable: true,
+            show_icon_title: false,
+            cdn: {
+                fontawesome: {
+                    title: 'FontAwesome',
+                    selector: 'fa',
+                    icon_selector: 'fa-',
+                    url: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'
+                },
+                ionicons: {
+                    title: 'Ionic Icons',
+                    selector: '',
+                    icon_selector: 'ion-',
+                    url: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'
+                },
+                foundation_icons: {
+                    title: 'Foundation Icons 3',
+                    selector: '',
+                    icon_selector: 'fi-',
+                    url: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css'
+                },
+                themify: {
+                    title: 'Themify icons',
+                    selector: '',
+                    icon_selector: 'ti-',
+                    url: 'dist/themify/themify-icons.css'
+                }
+            },
+            classes: {
+                disabled: 'pickIcon-disabled',
+                clickable: 'clickable',
+                icon_in_list: 'pickIcon-icon',
+                no_icon: 'none'
+            },
             templates: {
                 wrap: '<div class="pickIcon-container"/>',
                 selected_icon_wrap: '<div class="pickIcon-selected"/>',
@@ -157,45 +193,7 @@
                 icon: '<span class="[[sys_class]] [[selector]] [[icon_selector]][[icon]]" title="[[title]]" data-selector="[[selector]]" data-icon_selector="[[icon_selector]]" data-alias="[[alias]]"/>',
                 icon_none: '<span class="[[sys_class]] none" title="|%remove_icon%|"/>',
                 link: '<link rel="stylesheet" type="text/css" href="[[link]]" media="all" crossorigin="anonymous">'
-            },
-            classes: {
-                disabled: 'pickIcon-disabled',
-                clickable: 'clickable',
-                icon_in_list: 'pickIcon-icon',
-                no_icon: 'none'
-            },
-            cdn: {
-                fontawesome: {
-                    title: 'FontAwesome',
-                    selector: 'fa',
-                    icon_selector: 'fa-',
-//                    url: 'dist/font-awesome/font-awesome.min.css'
-                    url: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'
-                },
-                ionicons: {
-                    title: 'Ionic Icons',
-                    selector: '',
-                    icon_selector: 'ion-',
-//                    url: 'dist/ionicons/ionicons.min.css'
-                    url: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'
-                },
-                foundation_icons: {
-                    title: 'Foundation Icons 3',
-                    selector: '',
-                    icon_selector: 'fi-',
-//                    url: 'dist/foundation-icons/foundation-icons.css'
-                    url: 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css'
-                },
-                themify: {
-                    title: 'Themify icons',
-                    selector: '',
-                    icon_selector: 'ti-',
-                    url: 'dist/themify/themify-icons.css'
-                }
-            },
-            clickable: true,
-            filterable: true,
-            show_icon_title: false
+            }
         };
 
         this.$selectors = {
