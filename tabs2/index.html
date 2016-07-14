@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery Tabs2 demo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+        <link rel="stylesheet" type="text/css" href="demo.css" media="all">
+        <link rel="stylesheet" type="text/css" href="jquery.tabs2.css" media="all">
+        <script type="text/javascript" src="jquery.tabs2.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <h1>Tabs2 demo</h1>
+            <h2>Tabs - standard view</h2>
+            <h4><span class="fa fa-exclamation-triangle" style="color: red;"></span> Note that all demos use the same markup!</h4>
+            <div class="demo-container">
+                <div class="tabs" id="scroll-default">
+                    <div class="tabs-container">
+                        <a href="#about" class="tab current">About</a>
+                        <a href="#biography" class="tab">Biography</a>
+                        <a href="#personality" class="tab">Personality</a>
+                        <a href="#trivia" class="tab">Trivia</a>
+                        <a href="http://witcher.wikia.com/wiki/Geralt_of_Rivia" class="tab">More...</a>
+                        <a href="" class="tab disabled">Disabled tab</a>
+                    </div>
+                    <div class="tabs-content_container">
+                        <div class="tab-content current" id="about">
+                            <p>
+                                <b>Geralt of Rivia</b> (Polish: <i>Geralt z Rivii</i>) is a witcher and the main protagonist of the Witcher series by Andrzej Sapkowski and its adaptations, including <i>The Witcher,</i> <i>The Witcher 2: Assassins of Kings and The Witcher 3: Wild Hunt </i> videogames. Like all Witchers, Geralt is a monster hunter for hire. He possesses superhuman abilities and is a master swordsman. During the Trial of the Grasses, Geralt exhibited unusual tolerance for the mutagens that grant Witchers their abilities. Accordingly, Geralt was subjected to further experimental mutagens which rendered his hair white and may have given him greater speed, strength and stamina than his fellow Witchers.
+                            </p>
+                            <p>
+                                Geralt is also known as <b>Gwynbleidd</b>, meaning "White Wolf" in Elder Speech. He was given this alias by the dryads, and is also called the Butcher of Blaviken after an unfortunate incident in that town.
+                            </p>
+                            <p>
+                                Despite his title, Geralt does not hail from the city of Rivia. After being left with the witchers by his mother, Visenna, he grew up in their keep of Kaer Morhen in the realm of Kaedwen. In the interest of appearing more trustworthy to potential clients, young witchers were encouraged to make up surnames for themselves by master Vesemir]. As his first choice, Geralt chose "Geralt Roger Eric du Haute-Bellegarde", but this choice was dismissed by Vesemir as silly and pretentious, so "Geralt" was all that remained of his chosen name. "Of Rivia" was a more practical alternative and Geralt even went so far as to adopt a Rivian accent to appear more authentic.
+                            </p>
+                            <p>
+                                Later, Queen Meve of Lyria knighted him for his valour in the Battle for the Bridge on the Yaruga conferring on him the formal title "of Rivia", which amused him. He, therefore, became a true knight of Lyria.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="biography">
+                            <p>
+                                Geralt is the son of the sorceress Visenna and, presumably, the warrior Korin. Shortly after his birth, Geralt was taken by his mother to the School of the Wolf at the stronghold of Kaer Morhen. There, Geralt was trained and made to be a witcher. He survived the many blistering mutations required to grant witchers their abilities and passed the Trial of the Grasses. Geralt's training and physical modifications provided him with superhuman physical and mental abilities, including heightened reflexes, increased speed, great strength, and enhanced hearing.
+                            </p>
+                            <p>
+                                Due to his brilliant success in training, Geralt was selected for additional mutation experiments. He is the only witcher to have survived these experiments, his stark white hair being a side effect of these additional mutations. After finishing his witcher training, Geralt embarked into the world on a horse named Roach, a name he would bestow upon every one of his later horses. Thus, he became a monster slayer for hire.
+                            </p>
+                            <p>
+                                At one point, Geralt demanded the unborn child of princess Pavetta and her husband Duny (an alias of Emhyr var Emreis, the Emperor of Nilfgaard) as a reward for his services. The child was born a girl, and Geralt refused her. However, fate caused Geralt and the girl, Cirilla, to cross paths three times. Eventually, Geralt took the girl as his protégé, following the death of her grandmother, Queen Calanthe. Now, he loves her as his own daughter.
+                            </p>
+                            <p>
+                                Geralt's best friend is the bard Dandelion, and his romantic love is Yennefer.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="personality">
+                            <p>
+                                Geralt's character is largely left up to the choices of the player, however, the player cannot alter most of his personality traits. Geralt does not like to be ordered around or provoked. He can be cold and ruthless to people who are wicked and malevolent. He is by nature a loner and an outcast, with a ruthless streak to him that makes him extremely dangerous when provoked (or when the appropriate dialogue choices are made by the player). 
+                            </p>
+                            <p>
+                                Most of the time he can be apathetic, cynical, and threatening. Despite his outwardly cold nature, Dandelion notes that behind his exterior hides a fiercely loyal friend, and a man of good humour and a giver of sound advice. Geralt is shown in the books and games to have many good friends all over the Northern Realms, such as Caldemeyn of Blaviken, Zoltan Chivay, and of course Dandelion. He is also very protective and loyal to his friends and companions and is willing to go great lengths for those who matter to him. He can be kind-hearted and caring with the people he loves. 
+                            </p>
+                            <p>
+                                Geralt is also shown to be extremely adept at allaying intense, and at times bleak, situations in the video games, and as a man who would much sooner have everyone return home than draw their swords. His experience of at least ninety-seven years in the world makes him a world-weary man, often expressing disdain and circuitous insults to those he considers cruel, foolish, etc. Geralt is consistently shown as fiercely loyal to his friends. Depending on the player choice, he risks Temeria's future to save Triss Merigold from the Nilfgaardians. At the Edge of the World, he was shown requesting Scoia'tael to spare Dandelion and kill only himself.
+                            </p>
+                            <p>
+                                <span style="font-weight:normal;">Geralt's personality in the books resembles something much more human. Geralt frequently shows remorse and has revelations in his life throughout the books. Other times he has complete emotional breakdowns, even giving up being a witcher in general and dropping his morals at one point in Lady of The Lake.</span>
+                            </p>
+                        </div>
+                        <div class="tab-content" id="trivia">
+                            <ul>
+                                <li>
+                                    Geralt's name in the Elder Speech, <i>Gwynbleidd</i>, is very similar to the Welsh translation of "white wolf", which is <i>blaidd gwyn</i>.
+                                </li>
+                                <li>
+                                    Most of The Witcher 2 promotional screenshots or artwork featuring Geralt display a fairly different model, an early design, even the cover of the game doesn't use the in-game model for Geralt. A different model was planned to replace Geralt's face from The Witcher, but due to protests in Poland, CDP edited the old model and placed it into the game.
+                                </li>
+                                <li>
+                                    CD Projekt RED revealed in a Q&amp;A on Raptr that the first publishing offer they got for The Witcher was on the condition that they made Geralt female, amongst other changes.
+                                </li>
+                                <li>
+                                    A grown up Everett—styling himself as Julius Cudera—once challenged Geralt to a fight. Geralt used the Sign of Aard on Julius's testicles, rendering the latter sterile. Up to this day, Julius still asserts his superiority over others out of a blatant sense of insecurity and mental instability.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>Tabs - when in short space</h2>
+            <div class="demo-container short">
+                <div class="tabs" id="scroll-small">
+                    <div class="tabs-container">
+                        <a href="#about" class="tab current">About</a>
+                        <a href="#biography" class="tab">Biography</a>
+                        <a href="#personality" class="tab">Personality</a>
+                        <a href="#trivia" class="tab">Trivia</a>
+                        <a href="http://witcher.wikia.com/wiki/Geralt_of_Rivia" class="tab">More...</a>
+                        <a href="" class="tab disabled">Disabled tab</a>
+                    </div>
+                    <div class="tabs-content_container">
+                        <div class="tab-content current" id="about">
+                            <p>
+                                <b>Geralt of Rivia</b> (Polish: <i>Geralt z Rivii</i>) is a witcher and the main protagonist of the Witcher series by Andrzej Sapkowski and its adaptations, including <i>The Witcher,</i> <i>The Witcher 2: Assassins of Kings and The Witcher 3: Wild Hunt </i> videogames. Like all Witchers, Geralt is a monster hunter for hire. He possesses superhuman abilities and is a master swordsman. During the Trial of the Grasses, Geralt exhibited unusual tolerance for the mutagens that grant Witchers their abilities. Accordingly, Geralt was subjected to further experimental mutagens which rendered his hair white and may have given him greater speed, strength and stamina than his fellow Witchers.
+                            </p>
+                            <p>
+                                Geralt is also known as <b>Gwynbleidd</b>, meaning "White Wolf" in Elder Speech. He was given this alias by the dryads, and is also called the Butcher of Blaviken after an unfortunate incident in that town.
+                            </p>
+                            <p>
+                                Despite his title, Geralt does not hail from the city of Rivia. After being left with the witchers by his mother, Visenna, he grew up in their keep of Kaer Morhen in the realm of Kaedwen. In the interest of appearing more trustworthy to potential clients, young witchers were encouraged to make up surnames for themselves by master Vesemir]. As his first choice, Geralt chose "Geralt Roger Eric du Haute-Bellegarde", but this choice was dismissed by Vesemir as silly and pretentious, so "Geralt" was all that remained of his chosen name. "Of Rivia" was a more practical alternative and Geralt even went so far as to adopt a Rivian accent to appear more authentic.
+                            </p>
+                            <p>
+                                Later, Queen Meve of Lyria knighted him for his valour in the Battle for the Bridge on the Yaruga conferring on him the formal title "of Rivia", which amused him. He, therefore, became a true knight of Lyria.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="biography">
+                            <p>
+                                Geralt is the son of the sorceress Visenna and, presumably, the warrior Korin. Shortly after his birth, Geralt was taken by his mother to the School of the Wolf at the stronghold of Kaer Morhen. There, Geralt was trained and made to be a witcher. He survived the many blistering mutations required to grant witchers their abilities and passed the Trial of the Grasses. Geralt's training and physical modifications provided him with superhuman physical and mental abilities, including heightened reflexes, increased speed, great strength, and enhanced hearing.
+                            </p>
+                            <p>
+                                Due to his brilliant success in training, Geralt was selected for additional mutation experiments. He is the only witcher to have survived these experiments, his stark white hair being a side effect of these additional mutations. After finishing his witcher training, Geralt embarked into the world on a horse named Roach, a name he would bestow upon every one of his later horses. Thus, he became a monster slayer for hire.
+                            </p>
+                            <p>
+                                At one point, Geralt demanded the unborn child of princess Pavetta and her husband Duny (an alias of Emhyr var Emreis, the Emperor of Nilfgaard) as a reward for his services. The child was born a girl, and Geralt refused her. However, fate caused Geralt and the girl, Cirilla, to cross paths three times. Eventually, Geralt took the girl as his protégé, following the death of her grandmother, Queen Calanthe. Now, he loves her as his own daughter.
+                            </p>
+                            <p>
+                                Geralt's best friend is the bard Dandelion, and his romantic love is Yennefer.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="personality">
+                            <p>
+                                Geralt's character is largely left up to the choices of the player, however, the player cannot alter most of his personality traits. Geralt does not like to be ordered around or provoked. He can be cold and ruthless to people who are wicked and malevolent. He is by nature a loner and an outcast, with a ruthless streak to him that makes him extremely dangerous when provoked (or when the appropriate dialogue choices are made by the player). 
+                            </p>
+                            <p>
+                                Most of the time he can be apathetic, cynical, and threatening. Despite his outwardly cold nature, Dandelion notes that behind his exterior hides a fiercely loyal friend, and a man of good humour and a giver of sound advice. Geralt is shown in the books and games to have many good friends all over the Northern Realms, such as Caldemeyn of Blaviken, Zoltan Chivay, and of course Dandelion. He is also very protective and loyal to his friends and companions and is willing to go great lengths for those who matter to him. He can be kind-hearted and caring with the people he loves. 
+                            </p>
+                            <p>
+                                Geralt is also shown to be extremely adept at allaying intense, and at times bleak, situations in the video games, and as a man who would much sooner have everyone return home than draw their swords. His experience of at least ninety-seven years in the world makes him a world-weary man, often expressing disdain and circuitous insults to those he considers cruel, foolish, etc. Geralt is consistently shown as fiercely loyal to his friends. Depending on the player choice, he risks Temeria's future to save Triss Merigold from the Nilfgaardians. At the Edge of the World, he was shown requesting Scoia'tael to spare Dandelion and kill only himself.
+                            </p>
+                            <p>
+                                <span style="font-weight:normal;">Geralt's personality in the books resembles something much more human. Geralt frequently shows remorse and has revelations in his life throughout the books. Other times he has complete emotional breakdowns, even giving up being a witcher in general and dropping his morals at one point in Lady of The Lake.</span>
+                            </p>
+                        </div>
+                        <div class="tab-content" id="trivia">
+                            <ul>
+                                <li>
+                                    Geralt's name in the Elder Speech, <i>Gwynbleidd</i>, is very similar to the Welsh translation of "white wolf", which is <i>blaidd gwyn</i>.
+                                </li>
+                                <li>
+                                    Most of The Witcher 2 promotional screenshots or artwork featuring Geralt display a fairly different model, an early design, even the cover of the game doesn't use the in-game model for Geralt. A different model was planned to replace Geralt's face from The Witcher, but due to protests in Poland, CDP edited the old model and placed it into the game.
+                                </li>
+                                <li>
+                                    CD Projekt RED revealed in a Q&amp;A on Raptr that the first publishing offer they got for The Witcher was on the condition that they made Geralt female, amongst other changes.
+                                </li>
+                                <li>
+                                    A grown up Everett—styling himself as Julius Cudera—once challenged Geralt to a fight. Geralt used the Sign of Aard on Julius's testicles, rendering the latter sterile. Up to this day, Julius still asserts his superiority over others out of a blatant sense of insecurity and mental instability.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>Tabs - vertical tabs</h2>
+            <div class="demo-container">
+                <div class="tabs vertical" id="vertical-standard">
+                    <div class="tabs-container">
+                        <a href="#about" class="tab current">About</a>
+                        <a href="#biography" class="tab">Biography</a>
+                        <a href="#personality" class="tab">Personality</a>
+                        <a href="#trivia" class="tab">Trivia</a>
+                        <a href="http://witcher.wikia.com/wiki/Geralt_of_Rivia" class="tab">More...</a>
+                        <a href="" class="tab disabled">Disabled tab</a>
+                    </div>
+                    <div class="tabs-content_container">
+                        <div class="tab-content current" id="about">
+                            <p>
+                                <b>Geralt of Rivia</b> (Polish: <i>Geralt z Rivii</i>) is a witcher and the main protagonist of the Witcher series by Andrzej Sapkowski and its adaptations, including <i>The Witcher,</i> <i>The Witcher 2: Assassins of Kings and The Witcher 3: Wild Hunt </i> videogames. Like all Witchers, Geralt is a monster hunter for hire. He possesses superhuman abilities and is a master swordsman. During the Trial of the Grasses, Geralt exhibited unusual tolerance for the mutagens that grant Witchers their abilities. Accordingly, Geralt was subjected to further experimental mutagens which rendered his hair white and may have given him greater speed, strength and stamina than his fellow Witchers.
+                            </p>
+                            <p>
+                                Geralt is also known as <b>Gwynbleidd</b>, meaning "White Wolf" in Elder Speech. He was given this alias by the dryads, and is also called the Butcher of Blaviken after an unfortunate incident in that town.
+                            </p>
+                            <p>
+                                Despite his title, Geralt does not hail from the city of Rivia. After being left with the witchers by his mother, Visenna, he grew up in their keep of Kaer Morhen in the realm of Kaedwen. In the interest of appearing more trustworthy to potential clients, young witchers were encouraged to make up surnames for themselves by master Vesemir]. As his first choice, Geralt chose "Geralt Roger Eric du Haute-Bellegarde", but this choice was dismissed by Vesemir as silly and pretentious, so "Geralt" was all that remained of his chosen name. "Of Rivia" was a more practical alternative and Geralt even went so far as to adopt a Rivian accent to appear more authentic.
+                            </p>
+                            <p>
+                                Later, Queen Meve of Lyria knighted him for his valour in the Battle for the Bridge on the Yaruga conferring on him the formal title "of Rivia", which amused him. He, therefore, became a true knight of Lyria.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="biography">
+                            <p>
+                                Geralt is the son of the sorceress Visenna and, presumably, the warrior Korin. Shortly after his birth, Geralt was taken by his mother to the School of the Wolf at the stronghold of Kaer Morhen. There, Geralt was trained and made to be a witcher. He survived the many blistering mutations required to grant witchers their abilities and passed the Trial of the Grasses. Geralt's training and physical modifications provided him with superhuman physical and mental abilities, including heightened reflexes, increased speed, great strength, and enhanced hearing.
+                            </p>
+                            <p>
+                                Due to his brilliant success in training, Geralt was selected for additional mutation experiments. He is the only witcher to have survived these experiments, his stark white hair being a side effect of these additional mutations. After finishing his witcher training, Geralt embarked into the world on a horse named Roach, a name he would bestow upon every one of his later horses. Thus, he became a monster slayer for hire.
+                            </p>
+                            <p>
+                                At one point, Geralt demanded the unborn child of princess Pavetta and her husband Duny (an alias of Emhyr var Emreis, the Emperor of Nilfgaard) as a reward for his services. The child was born a girl, and Geralt refused her. However, fate caused Geralt and the girl, Cirilla, to cross paths three times. Eventually, Geralt took the girl as his protégé, following the death of her grandmother, Queen Calanthe. Now, he loves her as his own daughter.
+                            </p>
+                            <p>
+                                Geralt's best friend is the bard Dandelion, and his romantic love is Yennefer.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="personality">
+                            <p>
+                                Geralt's character is largely left up to the choices of the player, however, the player cannot alter most of his personality traits. Geralt does not like to be ordered around or provoked. He can be cold and ruthless to people who are wicked and malevolent. He is by nature a loner and an outcast, with a ruthless streak to him that makes him extremely dangerous when provoked (or when the appropriate dialogue choices are made by the player). 
+                            </p>
+                            <p>
+                                Most of the time he can be apathetic, cynical, and threatening. Despite his outwardly cold nature, Dandelion notes that behind his exterior hides a fiercely loyal friend, and a man of good humour and a giver of sound advice. Geralt is shown in the books and games to have many good friends all over the Northern Realms, such as Caldemeyn of Blaviken, Zoltan Chivay, and of course Dandelion. He is also very protective and loyal to his friends and companions and is willing to go great lengths for those who matter to him. He can be kind-hearted and caring with the people he loves. 
+                            </p>
+                            <p>
+                                Geralt is also shown to be extremely adept at allaying intense, and at times bleak, situations in the video games, and as a man who would much sooner have everyone return home than draw their swords. His experience of at least ninety-seven years in the world makes him a world-weary man, often expressing disdain and circuitous insults to those he considers cruel, foolish, etc. Geralt is consistently shown as fiercely loyal to his friends. Depending on the player choice, he risks Temeria's future to save Triss Merigold from the Nilfgaardians. At the Edge of the World, he was shown requesting Scoia'tael to spare Dandelion and kill only himself.
+                            </p>
+                            <p>
+                                <span style="font-weight:normal;">Geralt's personality in the books resembles something much more human. Geralt frequently shows remorse and has revelations in his life throughout the books. Other times he has complete emotional breakdowns, even giving up being a witcher in general and dropping his morals at one point in Lady of The Lake.</span>
+                            </p>
+                        </div>
+                        <div class="tab-content" id="trivia">
+                            <ul>
+                                <li>
+                                    Geralt's name in the Elder Speech, <i>Gwynbleidd</i>, is very similar to the Welsh translation of "white wolf", which is <i>blaidd gwyn</i>.
+                                </li>
+                                <li>
+                                    Most of The Witcher 2 promotional screenshots or artwork featuring Geralt display a fairly different model, an early design, even the cover of the game doesn't use the in-game model for Geralt. A different model was planned to replace Geralt's face from The Witcher, but due to protests in Poland, CDP edited the old model and placed it into the game.
+                                </li>
+                                <li>
+                                    CD Projekt RED revealed in a Q&amp;A on Raptr that the first publishing offer they got for The Witcher was on the condition that they made Geralt female, amongst other changes.
+                                </li>
+                                <li>
+                                    A grown up Everett—styling himself as Julius Cudera—once challenged Geralt to a fight. Geralt used the Sign of Aard on Julius's testicles, rendering the latter sterile. Up to this day, Julius still asserts his superiority over others out of a blatant sense of insecurity and mental instability.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>Vertical tabs in small space</h2>
+            <div class="demo-container short">
+                <div class="tabs vertical" id="vertical-small">
+                    <div class="tabs-container">
+                        <a href="#about" class="tab current">About</a>
+                        <a href="#biography" class="tab">Biography</a>
+                        <a href="#personality" class="tab">Personality</a>
+                        <a href="#trivia" class="tab">Trivia</a>
+                        <a href="http://witcher.wikia.com/wiki/Geralt_of_Rivia" class="tab">More...</a>
+                        <a href="" class="tab disabled">Disabled tab</a>
+                    </div>
+                    <div class="tabs-content_container">
+                        <div class="tab-content current" id="about">
+                            <p>
+                                <b>Geralt of Rivia</b> (Polish: <i>Geralt z Rivii</i>) is a witcher and the main protagonist of the Witcher series by Andrzej Sapkowski and its adaptations, including <i>The Witcher,</i> <i>The Witcher 2: Assassins of Kings and The Witcher 3: Wild Hunt </i> videogames. Like all Witchers, Geralt is a monster hunter for hire. He possesses superhuman abilities and is a master swordsman. During the Trial of the Grasses, Geralt exhibited unusual tolerance for the mutagens that grant Witchers their abilities. Accordingly, Geralt was subjected to further experimental mutagens which rendered his hair white and may have given him greater speed, strength and stamina than his fellow Witchers.
+                            </p>
+                            <p>
+                                Geralt is also known as <b>Gwynbleidd</b>, meaning "White Wolf" in Elder Speech. He was given this alias by the dryads, and is also called the Butcher of Blaviken after an unfortunate incident in that town.
+                            </p>
+                            <p>
+                                Despite his title, Geralt does not hail from the city of Rivia. After being left with the witchers by his mother, Visenna, he grew up in their keep of Kaer Morhen in the realm of Kaedwen. In the interest of appearing more trustworthy to potential clients, young witchers were encouraged to make up surnames for themselves by master Vesemir]. As his first choice, Geralt chose "Geralt Roger Eric du Haute-Bellegarde", but this choice was dismissed by Vesemir as silly and pretentious, so "Geralt" was all that remained of his chosen name. "Of Rivia" was a more practical alternative and Geralt even went so far as to adopt a Rivian accent to appear more authentic.
+                            </p>
+                            <p>
+                                Later, Queen Meve of Lyria knighted him for his valour in the Battle for the Bridge on the Yaruga conferring on him the formal title "of Rivia", which amused him. He, therefore, became a true knight of Lyria.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="biography">
+                            <p>
+                                Geralt is the son of the sorceress Visenna and, presumably, the warrior Korin. Shortly after his birth, Geralt was taken by his mother to the School of the Wolf at the stronghold of Kaer Morhen. There, Geralt was trained and made to be a witcher. He survived the many blistering mutations required to grant witchers their abilities and passed the Trial of the Grasses. Geralt's training and physical modifications provided him with superhuman physical and mental abilities, including heightened reflexes, increased speed, great strength, and enhanced hearing.
+                            </p>
+                            <p>
+                                Due to his brilliant success in training, Geralt was selected for additional mutation experiments. He is the only witcher to have survived these experiments, his stark white hair being a side effect of these additional mutations. After finishing his witcher training, Geralt embarked into the world on a horse named Roach, a name he would bestow upon every one of his later horses. Thus, he became a monster slayer for hire.
+                            </p>
+                            <p>
+                                At one point, Geralt demanded the unborn child of princess Pavetta and her husband Duny (an alias of Emhyr var Emreis, the Emperor of Nilfgaard) as a reward for his services. The child was born a girl, and Geralt refused her. However, fate caused Geralt and the girl, Cirilla, to cross paths three times. Eventually, Geralt took the girl as his protégé, following the death of her grandmother, Queen Calanthe. Now, he loves her as his own daughter.
+                            </p>
+                            <p>
+                                Geralt's best friend is the bard Dandelion, and his romantic love is Yennefer.
+                            </p>
+                        </div>
+                        <div class="tab-content" id="personality">
+                            <p>
+                                Geralt's character is largely left up to the choices of the player, however, the player cannot alter most of his personality traits. Geralt does not like to be ordered around or provoked. He can be cold and ruthless to people who are wicked and malevolent. He is by nature a loner and an outcast, with a ruthless streak to him that makes him extremely dangerous when provoked (or when the appropriate dialogue choices are made by the player). 
+                            </p>
+                            <p>
+                                Most of the time he can be apathetic, cynical, and threatening. Despite his outwardly cold nature, Dandelion notes that behind his exterior hides a fiercely loyal friend, and a man of good humour and a giver of sound advice. Geralt is shown in the books and games to have many good friends all over the Northern Realms, such as Caldemeyn of Blaviken, Zoltan Chivay, and of course Dandelion. He is also very protective and loyal to his friends and companions and is willing to go great lengths for those who matter to him. He can be kind-hearted and caring with the people he loves. 
+                            </p>
+                            <p>
+                                Geralt is also shown to be extremely adept at allaying intense, and at times bleak, situations in the video games, and as a man who would much sooner have everyone return home than draw their swords. His experience of at least ninety-seven years in the world makes him a world-weary man, often expressing disdain and circuitous insults to those he considers cruel, foolish, etc. Geralt is consistently shown as fiercely loyal to his friends. Depending on the player choice, he risks Temeria's future to save Triss Merigold from the Nilfgaardians. At the Edge of the World, he was shown requesting Scoia'tael to spare Dandelion and kill only himself.
+                            </p>
+                            <p>
+                                <span style="font-weight:normal;">Geralt's personality in the books resembles something much more human. Geralt frequently shows remorse and has revelations in his life throughout the books. Other times he has complete emotional breakdowns, even giving up being a witcher in general and dropping his morals at one point in Lady of The Lake.</span>
+                            </p>
+                        </div>
+                        <div class="tab-content" id="trivia">
+                            <ul>
+                                <li>
+                                    Geralt's name in the Elder Speech, <i>Gwynbleidd</i>, is very similar to the Welsh translation of "white wolf", which is <i>blaidd gwyn</i>.
+                                </li>
+                                <li>
+                                    Most of The Witcher 2 promotional screenshots or artwork featuring Geralt display a fairly different model, an early design, even the cover of the game doesn't use the in-game model for Geralt. A different model was planned to replace Geralt's face from The Witcher, but due to protests in Poland, CDP edited the old model and placed it into the game.
+                                </li>
+                                <li>
+                                    CD Projekt RED revealed in a Q&amp;A on Raptr that the first publishing offer they got for The Witcher was on the condition that they made Geralt female, amongst other changes.
+                                </li>
+                                <li>
+                                    A grown up Everett—styling himself as Julius Cudera—once challenged Geralt to a fight. Geralt used the Sign of Aard on Julius's testicles, rendering the latter sterile. Up to this day, Julius still asserts his superiority over others out of a blatant sense of insecurity and mental instability.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            (function ($, window, document) {
+                $(function () {
+                    $('.tabs').tabs2();
+                });
+            })(jQuery, window, document);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css';
+/*@import '../pickIcon/dist/font-awesome/font-awesome.min.css';*/
+
+.tabs,
+.tabs *,
+.tabs *::before,
+.tabs *::after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+/* -- GENERAL -- */
+/* horizontal tabs */
+.tabs { margin-bottom: 20px; }
+.tabs > .tabs-container { position: relative; overflow: hidden; }
+.tabs > .tabs-container:after { display: block; clear: both; content: ''; }
+.tabs > .tabs-container .tabs-wrapper { position: absolute; top: 0; transition: transform 0.4s linear; }
+.tabs > .tabs-container .tabs-controls { position: absolute; top: 0; right: 0; height: 100%; z-index: 100; display: inline-block; }
+.tabs > .tabs-container .tabs-controls > * { cursor: pointer; margin: 0 5px; }
+.tabs > .tabs-container .tab { display: block; float: left; cursor: pointer; }
+.tabs > .tabs-container .tab.current {}
+.tabs > .tabs-container .tab.disabled,
+.tabs > .tabs-container .tab[disabled]{ cursor: default; }
+.tabs > .tabs-content_container {}
+.tabs > .tabs-content_container .tab-content { display: none; }
+.tabs > .tabs-content_container .tab-content.current { display: block; }
+
+/* vertical tabs */
+.tabs.vertical > .tabs-container { float: left; width: 200px; }
+.tabs.vertical > .tabs-container:after { display: block; clear: both; content: ''; }
+.tabs > .tabs-container .tabs-wrapper { position: static; }
+.tabs.vertical > .tabs-container .tab { float: none; }
+.tabs.vertical > .tabs-content_container { margin-left: 200px; }
+
+/* menu tabs */
+.tabs.menu {}
+.tabs.menu > .tabs-container { float: none; width: 100%; margin-bottom: 5px !important; overflow: visible; }
+.tabs.menu > .tabs-container .tabs-menu { display: block; float: left; cursor: pointer; }
+.tabs.menu > .tabs-container .tabs-wrapper { position: absolute; top: 34px; width: auto; z-index: -1; opacity: 0; background-color: #fff; transition: opacity 0.4s linear; }
+.tabs.menu > .tabs-container.opened .tabs-wrapper { z-index: 100; opacity: 1; }
+.tabs.menu > .tabs-content_container { margin-left: 0; }
+
+/* -- STYLING -- */
+/* horizontal tabs */
+.tabs > .tabs-container { margin-bottom: 5px; }
+.tabs > .tabs-container:before { display: block; content: ''; position: absolute; top: 0; left: 0px; z-index: 100; width: 0; height: 100%; transition: width 0.4s linear; }
+.tabs > .tabs-container.fade_before:before { width: 20px; }
+.tabs > .tabs-container .tabs-controls { padding: 12px; }
+.tabs > .tabs-container .tabs-controls:before { display: block; content: ''; position: absolute; top: 0; left: -20px; width: 20px; height: 100%; }
+.tabs > .tabs-container .tab { margin-right: 5px; padding: 10px 20px; text-decoration: none; }
+.tabs > .tabs-container .tab.current {}
+.tabs > .tabs-content_container .tab-content { padding: 10px; }
+.tabs.vertical > .tabs-container { margin-bottom: 0; }
+.tabs.vertical > .tabs-container .tab { margin-bottom: 5px; }
+
+.tabs.menu > .tabs-container .tabs-menu { margin-right: 5px; padding: 11px 20px; text-decoration: none; }
+.tabs.menu > .tabs-container .tab { margin-right: 0; }
+.tabs.menu > .tabs-container > .tab.menu-tab { display: block; float: left; cursor: default; }
+
+
+/* -- COLORS -- */
+.tabs > .tabs-container {}
+.tabs > .tabs-container:before { background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); }
+.tabs > .tabs-container .tabs-controls { background-color: #fff; }
+.tabs > .tabs-container .tabs-controls:before { background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); }
+.tabs > .tabs-container .tab { background-color: #b4dffb; color: #333; font-size: 14px; }
+.tabs > .tabs-container .tab.current { background-color: #72c7fd; color: #fff; }
+.tabs > .tabs-container .tab.disabled,
+.tabs > .tabs-container .tab[disabled]{ background-color: #eee; color: #666; }
+.tabs > .tabs-container .tab:hover:not(.disabled):not(.menu-tab) { background-color: #2b8fce; color: #fff; transition: all 0.2s linear; }
+.tabs > .tabs-container .tabs-controls > * { color: #72c7fd; }
+.tabs > .tabs-container .tabs-controls > *:hover:not(.disabled) { color: #2b8fce; }
+.tabs > .tabs-container .tabs-controls > *.disabled { color: #888; }
+.tabs > .tabs-content_container { background-color: #72c7fd; }
+
+.tabs.menu > .tabs-container .tabs-menu { background-color: #b4dffb; color: #333; font-size: 14px; }
+.tabs.menu > .tabs-container.opened .tabs-menu { background-color: #2b8fce; }
