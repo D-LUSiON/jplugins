@@ -1,7 +1,7 @@
 /**
  * TITLE: jQuery tabs2 plugin with AMD and localization support 
  * AUTHOR: D-LUSiON
- * VERSION: v1.0.0
+ * VERSION: v1.1.0
  * COPYRIGHT:
  *      (2015 - 2016) D-LUSiON;
  *      Licensed under the MIT license: http://www.opensource.org/licenses/MIT
@@ -21,8 +21,8 @@
 }(function ($) {
     'use strict';
     var pluginName = 'tabs2',
-            version = 'v1.0.0',
-            dependancies = [],
+            version = 'v1.1.0',
+            dependancies = ['swipe'],
             NS = {},
             CONST = {
                 LANG: {
@@ -47,17 +47,23 @@
                     ENTER: 13,
                     ESCAPE: 27,
                     SEMICOLON: 186,
-                    COMMA: 188
+                    COMMA: 188,
+                    LEFT: 37,
+                    RIGHT: 39
                 },
                 EVENT: {
+                    LOAD: 'load',
                     CLICK: 'click',
                     KEYUP: 'keyup',
                     KEYDOWN: 'keydown',
                     FOCUS: 'focus',
                     BLUR: 'blur',
-                    RESIZE: 'resize'
+                    RESIZE: 'resize',
+                    SWIPE_LEFT: 'swipeleft',
+                    SWIPE_RIGHT: 'swiperight'
                 },
                 ATTRIBUTE: {
+                    ID: 'id',
                     LANG: 'lang',
                     CLASS: 'class',
                     HREF: 'href',
@@ -98,7 +104,7 @@
     if (!String.isUrl)
         $.extend(String.prototype, {
             isUrl: function () {
-                return /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(this);
+                return /^(ftp:\/\/|http:\/\/|https:\/\/)?(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!-\/]))?$/.test(this);
             }
         });
 
@@ -122,7 +128,11 @@
                 provide_valid_selector: 'Please, provide valid ID selector!'
             }
         },
-        'bg-BG': {}
+        'bg-BG': {
+            error: {
+                provide_valid_selector: 'Грешен ID селектор!'
+            }
+        }
     };
 
     NS[pluginName] = function (element, options) {
@@ -139,25 +149,31 @@
                     right: '<span class="fa fa-chevron-right" data-role="[[scroll_right]]"/>'
                 },
                 menu: '<div class="tabs-menu fa fa-bars"/>',
+                ajax_content: '<div class="tab-content" id="ajaxTab_[[instance_id]]"/>',
                 example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
             },
             vertical: false,
             reverse_scroll: false,
             responsive_scroller: true,
             menu_close_on_click: true,
-            tab_content_ajax: false,
+            tab_ajax_load: true,
+            animated: true,
+            use_keys: true,
+            //TODO: Add new tab functionality
             allow_add_tab: false,
             actions: {
                 scroll_left: 'scroll-left',
                 scroll_right: 'scroll-right'
             },
             classes: {
+                animated: 'animated',
                 vertical: 'vertical',
                 menu: 'menu',
                 current: 'current',
                 fade_front: 'fade_before',
                 disabled: 'disabled',
-                opened: 'opened'
+                opened: 'opened',
+                loading: 'loading'
             },
             selectors: {
                 tabs_container: '.tabs-container',
@@ -165,7 +181,8 @@
                 contents_container: '.tabs-content_container',
                 content: '.tab-content'
             },
-            onTabClick: function () {}
+            onTabClick: function () {},
+            onTabChange: function () {}
         };
 
         this.$selectors = {
@@ -187,12 +204,14 @@
             body_lang = body_lang + CONST.CHAR.DASH + body_lang.toUpperCase();
 
         _.lang_use = (typeof (options || {}).lang !== CONST.DATA_TYPE.UNDEFINED && (options || {}).lang !== this.defaults.lang) ? this.settings.lang : (body_lang || window.navigator.language);
-
+        
         this.localization = window.Localization[pluginName][_.lang_use] || window.Localization[pluginName][this.defaults.lang];
 
         this.offset = 0;
         this.initial_tabs_width = 0;
         this.initial_contents_width = 0;
+        
+        this.instance_id = new Date().getTime().toString();
 
         function __construct() {
             _getElements();
@@ -203,10 +222,10 @@
         }
 
         function _getElements() {
-            obj.$selectors.tabs_container = obj.$selectors.root.children(obj.settings.selectors.tabs_container);
-            obj.$selectors.tabs = obj.$selectors.tabs_container.children(obj.settings.selectors.tabs);
-            obj.$selectors.contents_container = obj.$selectors.root.children(obj.settings.selectors.contents_container);
-            obj.$selectors.contents = obj.$selectors.contents_container.children(obj.settings.selectors.content);
+            obj.$selectors.tabs_container = obj.$selectors.root.find(obj.settings.selectors.tabs_container);
+            obj.$selectors.tabs = obj.$selectors.tabs_container.find(obj.settings.selectors.tabs);
+            obj.$selectors.contents_container = obj.$selectors.root.find(obj.settings.selectors.contents_container);
+            obj.$selectors.contents = obj.$selectors.contents_container.find(obj.settings.selectors.content);
             
             obj.initial_tabs_width = obj.$selectors.tabs_container.outerWidth(true);
             obj.initial_contents_width = obj.$selectors.contents_container.outerWidth(true);
@@ -231,9 +250,29 @@
                 obj.$selectors.tabs_wrapper.width(tabs_width + 1);
 
                 obj.$selectors.tabs_container.height(obj.$selectors.tabs.outerHeight(true));
-            } else {
-
             }
+            
+            if (obj.settings.animated || obj.$selectors.root.hasClass(obj.settings.classes.animated)) {
+                obj.settings.animated = true;
+                obj.$selectors.root.addClass(obj.settings.classes.animated);
+                var tab_height = obj.$selectors.contents.filter(CONST.SELECTOR.CLASS + obj.settings.classes.current).outerHeight();
+                obj.$selectors.contents_container.height(tab_height);
+                obj.$selectors.window.one(CONST.EVENT.LOAD, function(){
+                    tab_height = obj.$selectors.contents.filter(CONST.SELECTOR.CLASS + obj.settings.classes.current).outerHeight();
+                    obj.$selectors.contents_container.height(tab_height);
+                });
+            }
+        }
+        
+        function _addAjaxTabContent(){
+            var tpl = obj.renderTemplate(obj.settings.templates.ajax_content, { instance_id: obj.instance_id }),
+                target_content = $(tpl).attr(CONST.ATTRIBUTE.ID);
+            if (obj.settings.tab_ajax_load && $(target_content).length === 0) {
+                $(tpl).appendTo(obj.$selectors.contents_container);
+                obj.$selectors.contents = obj.$selectors.contents_container.find(obj.settings.selectors.content);
+            }
+            
+            return CONST.CHAR.HASH + target_content;
         }
 
         function _appendControls() {
@@ -271,18 +310,41 @@
                 obj.$selectors.tabs_controls.on(CONST.EVENT.CLICK, CONST.ELEMENTS.ALL, function () {
                     var $this = $(this);
                     switch ($this.data('role')) {
-                        case 'scroll-left':
-                            obj.scrollLeft();
-                            break;
-
-                        case 'scroll-right':
-                            obj.scrollRight();
-                            break;
-
-                        default:
-                            break;
+                        case 'scroll-left': obj.scrollLeft(); break;
+                        case 'scroll-right': obj.scrollRight(); break;
+                        default: break;
                     }
                 });
+                
+                var touchDown = false,
+                    originalPosition = null;
+                
+                obj.$selectors.tabs_container.on('touchstart mousedown', function (e) {
+                    touchDown = true;
+                    originalPosition = e.originalEvent.pageX || e.originalEvent.touches[0].pageX;
+                }).on('touchend mouseup', function () {
+                    touchDown = false;
+                    originalPosition = null;
+                }).on('touchmove mousemove', function (e) {
+                    if (!touchDown)
+                        return;
+                    
+                    var x = e.originalEvent.pageX || e.originalEvent.touches[0].pageX,
+                        dx = (x > originalPosition) ? 'scrollLeft' : 'scrollRight',
+                        offset = Math.abs(x - originalPosition);
+                    
+                    //TODO: Send proper offset to the function
+                    
+                });
+                
+                if (obj.settings.use_keys)
+                    obj.$selectors.window.on(CONST.EVENT.KEYUP, function(e){
+                        switch (e.keyCode) {
+                            case CONST.KEYCODE.LEFT: obj.scrollLeft(); break;
+                            case CONST.KEYCODE.RIGHT: obj.scrollRight(); break;
+                            default: break;
+                        }
+                    });
             }
         }
 
@@ -296,10 +358,42 @@
                 obj.$selectors.tabs_wrapper.css({
                     transform: 'translateX(' + obj.offset + 'px)'
                 });
+                
+                if (obj.settings.use_keys)
+                    obj.$selectors.window.off(CONST.EVENT.KEYUP);
             }
         }
 
-        this.scrollLeft = function () {
+        function _appendMenu(){
+            if (!obj.$selectors.menu) {
+                obj.$selectors.root.addClass(obj.settings.classes.menu);
+                obj.$selectors.menu = $(obj.settings.templates.menu).prependTo(obj.$selectors.tabs_container);
+                
+                var current_tab_text = obj.$selectors.tabs.filter(CONST.SELECTOR.CLASS + obj.settings.classes.current).text();
+                
+                obj.$selectors.menu_current_tab = $(obj.renderTemplate(obj.settings.templates.menu_current_tab, {
+                    title: current_tab_text
+                })).insertAfter(obj.$selectors.menu);
+                obj.$selectors.menu.on(CONST.EVENT.CLICK, function(){
+                    obj.$selectors.tabs_container.toggleClass(obj.settings.classes.opened);
+                });
+            }
+        }
+        
+        function _removeMenu(){
+            if (obj.$selectors.root.hasClass(obj.settings.classes.menu)) {
+                obj.$selectors.tabs_container.removeClass(obj.settings.classes.opened);
+                obj.$selectors.root.removeClass(obj.settings.classes.menu);
+                if (obj.$selectors.menu) {
+                    obj.$selectors.menu.remove();
+                    obj.$selectors.menu_current_tab.remove();
+                    delete obj.$selectors.menu;
+                    delete obj.$selectors.menu_current_tab;
+                }
+            }
+        }
+
+        this.scrollLeft = function (offset) {
             if (obj.offset < -100)
                 obj.offset += 100;
             else
@@ -331,43 +425,12 @@
                 obj.$selectors.scroll_right.removeClass(obj.settings.classes.disabled);
         };
         
-        function _appendMenu(){
-            if (!obj.$selectors.menu) {
-                console.log(obj.$selectors.root.attr('id'), 'add menu');
-                obj.$selectors.root.addClass(obj.settings.classes.menu);
-                obj.$selectors.menu = $(obj.settings.templates.menu).prependTo(obj.$selectors.tabs_container);
-                
-                var current_tab_text = obj.$selectors.tabs.filter(CONST.SELECTOR.CLASS + obj.settings.classes.current).text();
-                
-                obj.$selectors.menu_current_tab = $(obj.renderTemplate(obj.settings.templates.menu_current_tab, {
-                    title: current_tab_text
-                })).insertAfter(obj.$selectors.menu);
-                obj.$selectors.menu.on(CONST.EVENT.CLICK, function(){
-                    obj.$selectors.tabs_container.toggleClass(obj.settings.classes.opened);
-                });
-            }
-        }
-        
-        function _removeMenu(){
-            if (obj.$selectors.root.hasClass(obj.settings.classes.menu)) {
-                console.log(obj.$selectors.root.attr('id'), 'remove menu');
-                obj.$selectors.tabs_container.removeClass(obj.settings.classes.opened);
-                obj.$selectors.root.removeClass(obj.settings.classes.menu);
-                if (obj.$selectors.menu) {
-                    obj.$selectors.menu.remove();
-                    obj.$selectors.menu_current_tab.remove();
-                    delete obj.$selectors.menu;
-                    delete obj.$selectors.menu_current_tab;
-                }
-            }
-        }
-
-        this.scrollRight = function () {
+        this.scrollRight = function (offset) {
             if (!obj.$selectors.scroll_right.hasClass(obj.settings.classes.disabled)) {
                 _.wrapper_visible_width = obj.$selectors.tabs_wrapper.outerWidth(true) + obj.offset;
                 _.container_visible_width = obj.$selectors.tabs_container.outerWidth() - obj.$selectors.tabs_controls.outerWidth(true);
                 if (_.wrapper_visible_width > _.container_visible_width) {
-                    obj.offset -= 100;
+                    obj.offset -= !offset? 100 : offset;
 
                     obj.$selectors.tabs_container.addClass(obj.settings.classes.fade_front);
                     obj.$selectors.scroll_left.removeClass(obj.settings.classes.disabled);
@@ -404,22 +467,27 @@
             }
         };
 
-        this.changeTab = function ($element) {
-            if (typeof $element === CONST.DATA_TYPE.STRING) {
-                if ($element.charAt(0) === CONST.CHAR.HASH) {
-                    $element = obj.$selectors.tabs.filter('[href="' + $element + '"]');
-                } else {
-                    if (window.console && console.error) {
-                        console.error(obj.localization.error.provide_valid_selector);
-                    }
+        this.changeTab = function (element, target_id) {
+            var $element;
+            if (typeof element === CONST.DATA_TYPE.STRING) {
+                $element = obj.$selectors.tabs.filter('[href="' + element + '"]');
+            }
+            
+            if (!$element || ($element.length && $element.length === 0)) {
+                if (window.console && console.error) {
+                    console.error(obj.localization.error.provide_valid_selector);
+                    return false;
                 }
             }
+            
+            if (typeof element !== CONST.DATA_TYPE.STRING || (target_id && target_id.charAt(0) !== CONST.CHAR.HASH))
+                target_id = null;
 
             obj.$selectors.tabs.removeClass(obj.settings.classes.current);
             $element.addClass(obj.settings.classes.current);
 
             obj.$selectors.contents.removeClass(obj.settings.classes.current);
-            obj.$selectors.contents.filter($element.attr(CONST.ATTRIBUTE.HREF)).addClass(obj.settings.classes.current);
+            obj.$selectors.contents.filter(target_id || element).addClass(obj.settings.classes.current);
             
             if (obj.$selectors.menu) {
                 if (obj.settings.menu_close_on_click)
@@ -427,20 +495,54 @@
                 
                 obj.$selectors.menu_current_tab.text(obj.$selectors.tabs.filter(CONST.SELECTOR.CLASS + obj.settings.classes.current).text());
             }
+            
+            if (obj.settings.animated) {
+                var tab_height = obj.$selectors.contents.filter(CONST.SELECTOR.CLASS + obj.settings.classes.current).outerHeight();
+                obj.$selectors.contents_container.height(tab_height);
+            }
+            
+            if (typeof obj.settings.onTabChange === CONST.DATA_TYPE.FUNCTION)
+                obj.settings.onTabChange.apply(obj, [element]);
+        };
+        
+        obj.loadTabContent = function(href, target){
+            var $target = obj.$selectors.contents.filter(target);
+            $.ajax({
+                url: href,
+                beforeSend: function(){
+                    $target.empty().addClass(obj.settings.classes.loading);
+                },
+                success: function(response){
+                    $target.html(response);
+                },
+                complete: function(jqXhr, status){
+                    $target.empty().removeClass(obj.settings.classes.loading);
+                    if (obj.settings.animated) {
+                        var tab_height = obj.$selectors.contents.filter(CONST.SELECTOR.CLASS + obj.settings.classes.current).outerHeight();
+                        obj.$selectors.contents_container.height(tab_height);
+                    }
+                }
+            });
         };
 
         function _startEventListeners() {
             obj.$selectors.tabs.on(CONST.EVENT.CLICK, function (e) {
                 e.preventDefault();
-
-                if (this.href.isUrl() && !obj.settings.tab_content_ajax) {
-                    window.location.assign(this.href);
-                    return false;
+                var $this = $(this),
+                    href = $this.attr(CONST.ATTRIBUTE.HREF),
+                    target_id = null;
+                    
+                if (href.charAt(0) !== CONST.CHAR.HASH && this.href.isUrl()) {
+                    if (!obj.settings.tab_ajax_load) {
+                        window.location.assign(this.href);
+                        return false;
+                    } else {
+                        target_id = _addAjaxTabContent();
+                        obj.loadTabContent(href, target_id);
+                    }
                 }
-
-                var $this = $(this);
-
-                obj.changeTab($this);
+                
+                obj.changeTab(href, target_id);
 
                 if (typeof obj.settings.onTabClick === CONST.DATA_TYPE.FUNCTION)
                     obj.settings.onTabClick.apply(obj, [e, $this]);
