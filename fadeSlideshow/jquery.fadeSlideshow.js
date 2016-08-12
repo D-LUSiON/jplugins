@@ -1,7 +1,7 @@
 /**
- * TITLE: jQuery blank template plugin with AMD and localization support 
+ * TITLE: jQuery slideshow with fade effect
  * AUTHOR: D-LUSiON
- * VERSION: v1.0.3
+ * VERSION: v1.0.0
  * COPYRIGHT:
  *      (2015 - 2016) D-LUSiON;
  *      Licensed under the MIT license: http://www.opensource.org/licenses/MIT
@@ -19,8 +19,8 @@
     }
 }(function ($) {
     'use strict';
-    var pluginName = 'blank_plugin',
-        version = 'v1.0.3',
+    var pluginName = 'fadeSlideshow',
+        version = 'v1.0.0',
         dependancies = [],
         NS = {},
         CONST = {
@@ -34,7 +34,7 @@
                 LAST_ELEMENT: ':last',
                 HIDDEN: ':hidden'
             },
-            ELEMENTS: {
+            ELEMENT: {
                 DIV: '<div/>'
             },
             CHAR: {
@@ -46,12 +46,13 @@
                 SEMICOLON: 186,
                 COMMA: 188
             },
-            EVENTS: {
+            EVENT: {
                 CLICK: 'click',
                 KEYUP: 'keyup',
                 KEYDOWN: 'keydown',
                 FOCUS: 'focus',
-                BLUR: 'blur'
+                BLUR: 'blur',
+                RESIZE: 'resize'
             },
             ATTRIBUTE: {
                 LANG: 'lang',
@@ -113,6 +114,12 @@
         var obj = this;
         this.defaults = {
             lang: 'en-US',
+            use_css_animations: true,
+            anim_time: 500,
+            anim_style: 'linear',
+            delay: 3500,
+            reverse: true,
+            stop_on_click: true,
             templates: {
                 example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
             }
@@ -120,7 +127,8 @@
 
         this.$selectors = {
             root: $(element),
-            body: $(CONST.SELECTOR.BODY)
+            body: $(CONST.SELECTOR.BODY),
+            window: $(window)
         };
 
         this.settings = $.extend(true, {}, this.defaults, options || {});
@@ -133,17 +141,149 @@
         var lang_use = (typeof (options || {}).lang !== CONST.DATA_TYPE.UNDEFINED && (options || {}).lang !== this.defaults.lang)? this.settings.lang : (body_lang || window.navigator.language );
         
         this.localization = window.Localization[pluginName][lang_use] || window.Localization[pluginName][this.defaults.lang];
-
+        
         var _ = {
-            ie_lt_9: ($.browser.msie && parseFloat($.browser.version) > 9) || (!$.browser.msie && window.navigator.userAgent.indexOf('Trident') === -1)
+            t: null
         };
+        
+        this.current_slide = 0;
 
         function __construct() {
-            _startEventListeners();
+            _preloadImages(function(){
+                _prepareHtml();
+                _startEventListeners();
+                if (obj.settings.delay > 0)
+                    obj.start();
+            });
             return obj;
         }
+        
+        function _preloadImages(callback){
+            obj.$selectors.images = obj.$selectors.root.find('img');
+            
+            if (obj.$selectors.images.length > 0) {
+                var i = 0;
+                
+                obj.$selectors.images.each(function(){
+                    var $img = $(this),
+                        img = new Image();
+                        
+                    img.onload = function(){
+                        i++;
+                        if (i === obj.$selectors.images.length && typeof callback === CONST.DATA_TYPE.FUNCTION)
+                            callback.apply(obj, []);
+                    };
 
-        function _startEventListeners() {}
+                    img.src = this.src;
+                });
+                
+            } else {
+                if (typeof callback === CONST.DATA_TYPE.FUNCTION)
+                    callback.apply(obj, []);
+            }
+        }
+        
+        function _prepareHtml(){
+            obj.$selectors.root.css({
+                position: 'relative'
+            });
+            
+            obj.$selectors.slides = obj.$selectors.root.children().css({
+                position: 'absolute',
+                top: -99999,
+                right: -99999,
+                bottom: -99999,
+                left: -99999,
+                width: 'auto',
+                margin: 'auto',
+                opacity: 0
+            });
+            
+            if (obj.settings.reverse)
+                obj.current_slide = obj.$selectors.slides.length - 1;
+            
+            obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').css({
+                opacity: 1
+            });
+            
+            obj.$selectors.root.height(obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').outerHeight());
+            
+            if (obj.settings.use_css_animations) {
+                obj.$selectors.root.css({
+                    transition: 'height ' + (obj.settings.anim_time / 1000) + 's ' + obj.settings.anim_style
+                });
+
+                obj.$selectors.slides.css({
+                    transition: 'opacity ' + (obj.settings.anim_time / 1000) + 's ' + obj.settings.anim_style
+                });
+            }
+        }
+        
+        this.next = function(){
+            obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').css({
+                opacity: 0
+            });
+            
+            obj.current_slide++;
+            
+            if (obj.current_slide > (obj.$selectors.slides.length - 1))
+                obj.current_slide = 0;
+            
+            obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').css({
+                opacity: 1
+            });
+            
+            obj.$selectors.root.height(obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').outerHeight());
+        };
+        
+        this.prev = function(){
+            obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').css({
+                opacity: 0
+            });
+            
+            if (obj.current_slide === 0)
+                obj.current_slide = obj.$selectors.slides.length - 1;
+            else
+                obj.current_slide--;
+            
+            obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').css({
+                opacity: 1
+            });
+            
+            obj.$selectors.root.height(obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').outerHeight());
+        };
+        
+        this.start = function(){
+            if (_.t)
+                this.stop();
+            
+            _.t = setInterval(function(){
+                if (obj.settings.reverse)
+                    obj.prev();
+                else
+                    obj.next();
+            }, obj.settings.delay || obj.defaults.delay);
+        };
+        
+        this.stop = function(){
+            clearInterval(_.t);
+            _.t = null;
+        };
+
+        function _startEventListeners() {
+            if (obj.settings.stop_on_click) {
+                obj.$selectors.slides.on(CONST.EVENT.CLICK, function(){
+                    if (_.t)
+                        obj.stop();
+                    else
+                        obj.start();
+                });
+            }
+            
+            obj.$selectors.window.on(CONST.EVENT.RESIZE, function(){
+                obj.$selectors.root.height(obj.$selectors.slides.filter(':eq(' + obj.current_slide + ')').outerHeight());
+            });
+        }
 
         this.enable = function () {
             return this;

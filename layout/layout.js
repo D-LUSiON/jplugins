@@ -96,12 +96,15 @@
             root.data('layout', layout);
         }
     };
-    $(function(){
-        $.layout({
-            selector: {
-                elementToSet: '#mainContent > .content',
-                excluded: ['#mainHeader', '#headerNotLogged', '#mainMenu', '#footerLinks', '#mainFooter']
-            }
-        });
-    });
+    
+//  Usage example:
+//  
+//    $(function(){
+//        $.layout({
+//            selector: {
+//                elementToSet: '#mainContent > .content',
+//                excluded: ['#mainHeader', '#headerNotLogged', '#mainMenu', '#footerLinks', '#mainFooter']
+//            }
+//        });
+//    });
 })(jQuery);
