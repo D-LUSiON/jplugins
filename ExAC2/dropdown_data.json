@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "parent_id": null,
+        "title": "София"
+    },
+    {
+        "id": 2,
+        "parent_id": null,
+        "title": "Пловдив"
+    },
+    {
+        "id": 3,
+        "parent_id": 1,
+        "title": "Център"
+    },
+    {
+        "id": 4,
+        "parent_id": 2,
+        "title": "Element 2-1"
+    },
+    {
+        "id": 5,
+        "parent_id": 2,
+        "title": "Element 2-2"
+    },
+    {
+        "id": 6,
+        "parent_id": 5,
+        "title": "Element 2-2-1"
+    },
+    {
+        "id": 7,
+        "parent_id": null,
+        "title": "Варна"
+    },
+    {
+        "id": 8,
+        "parent_id": 1,
+        "title": "Изток"
+    },
+    {
+        "id": 9,
+        "parent_id": 8,
+        "title": "Младост 1"
+    },
+    {
+        "id": 10,
+        "parent_id": 8,
+        "title": "Младост 1А"
+    },
+    {
+        "id": 11,
+        "parent_id": 8,
+        "title": "Младост 2"
+    },
+    {
+        "id": 12,
+        "parent_id": 8,
+        "title": "Младост 3"
+    },
+    {
+        "id": 13,
+        "parent_id": 8,
+        "title": "Младост 4"
+    },
+    {
+        "id": 14,
+        "parent_id": 1,
+        "title": "Север"
+    },
+    {
+        "id": 15,
+        "parent_id": 14,
+        "title": "Надежда 1"
+    },
+    {
+        "id": 16,
+        "parent_id": 14,
+        "title": "Надежда 2"
+    },
+    {
+        "id": 17,
+        "parent_id": 14,
+        "title": "Надежда 3"
+    },
+    {
+        "id": 18,
+        "parent_id": 14,
+        "title": "Надежда 4"
+    }
+]
