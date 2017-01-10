@@ -1,10 +1,17 @@
 /**
  * TITLE: jQuery Extended Autocomplete v2
  * AUTHOR: D-LUSiON
- * VERSION: v1.0.3
+ * VERSION: v2.1.0
  * COPYRIGHT:
  *      (2015 - 2016) D-LUSiON;
  *      Licensed under the MIT license: http://www.opensource.org/licenses/MIT
+ */
+
+/**
+ * CHANGELOG
+ * 
+ * v2.1.0
+ * - Added support for templating the input when not focused
  */
 
 ;(function (factory) {
@@ -20,7 +27,7 @@
 }(function ($) {
     'use strict';
     var pluginName = 'ExtAC2',
-        version = 'v2.0.0',
+        version = 'v2.1.0',
         dependancies = [],
         NS = {},
         CONST = {
@@ -32,6 +39,7 @@
                 HTML: 'html',
                 BODY: 'body',
                 CLASS: '.',
+                input: 'input',
                 LAST_ELEMENT: ':last',
                 HIDDEN: ':hidden'
             },
@@ -122,16 +130,15 @@
         
         this.auto_bind = true;
         this.model = {
-            id: 'id',
-            parent_id: 'parent_id',
-            text: 'title'
+            id_field: 'id',
+            parent_id_field: 'parent_id',
+            text_field: 'title'
         };
         this.data = [];
         this.hierarchy_data = {};
         this.paths = {};
         
         function __construct(){
-            console.log(options);
             self.set(options);
             if ((!self.data || self.data.length === 0) && self.auto_bind) {
                 setTimeout(function(){
@@ -148,8 +155,8 @@
                     
                     // look for root element
                     var idx = sorted_data.map(function(x){
-                        return x.id;
-                    }).indexOf(arr[i].parent_id);
+                        return x[self.model.id_field];
+                    }).indexOf(arr[i][self.model.parent_id_field]);
 
                     if (idx === -1) {
                         // insert root element
@@ -161,10 +168,10 @@
                         loop2:
                             while (idx + offset < sorted_data.length){
                                 if (
-                                        !sorted_data[idx + offset].parent_id || // indexed element is root
+                                        !sorted_data[idx + offset][self.model.parent_id_field] || // indexed element is root
                                         (
-                                            sorted_data[idx + offset].parent_id === arr[i].parent_id && // both have same parent
-                                            sorted_data[idx + offset].id > arr[i].id // indexed element is in fact after inserted element
+                                            sorted_data[idx + offset][self.model.parent_id_field] === arr[i][self.model.parent_id_field] && // both have same parent
+                                            sorted_data[idx + offset][self.model.id_field] > arr[i][self.model.id_field] // indexed element is in fact after inserted element
                                         )
                                     )
                                     break loop2; // the offset is found and we're breaking the while loop
@@ -180,15 +187,18 @@
         }
         
         function _setSublevel(arr){
-            var sublvl = 0;
+            var sublvl = 0,
+                path = [];
             
             function _getParrent(elem) {
                 sublvl++;
                 var parrent_idx = arr.map(function(x){
-                    return x.id;
-                }).indexOf(elem.parent_id);
+                    return x[self.model.id_field];
+                }).indexOf(elem[self.model.parent_id_field]);
                 
-                if (arr[parrent_idx].parent_id)
+                path.push(arr[parrent_idx][self.model.text_field]);
+                
+                if (arr[parrent_idx][self.model.parent_id_field])
                     _getParrent(arr[parrent_idx]);
                 else
                     return sublvl;
@@ -196,11 +206,13 @@
             
             for (var i = 0, max = arr.length; i < max; i++) {
                 sublvl = 0;
+                path = [];
                 
-                if (arr[i].parent_id)
+                if (arr[i][self.model.parent_id_field])
                     _getParrent(arr[i]);
                 
                 arr[i]._sublevel = sublvl;
+                arr[i]._path = path.reverse();
             }
         }
         
@@ -209,11 +221,8 @@
             
             this.auto_bind = opt.auto_bind;
             
-            if (opt.model) {
-                console.log(opt.model);
+            if (opt.model)
                 this.model = opt.model;
-                
-            }
             
             if (opt.data)
                 this.data = opt.data;
@@ -221,6 +230,12 @@
             for (var key in opt)
                 if (['model', 'data', 'auto_bind'].indexOf(key) === -1)
                     this.paths[key] = opt[key];
+        };
+        
+        this.getBy = function(prop, val){
+            return this.data.filter(function(el){
+                return el[prop] == val; // value might be string, but in the data value is number
+            })[0];
         };
         
         this.add = function(){};
@@ -232,6 +247,9 @@
                     data: this.paths.read.url,
                     method: this.paths.read.method,
                     dataType: this.paths.read.dataType || CONST.EMPTY_STRING,
+                    beforeSend: function(){
+                        _emmiter.trigger('loadingData');
+                    },
                     success: function(response){
                         self.data = response;
                         
@@ -255,6 +273,7 @@
                     if (typeof callback === CONST.DATA_TYPE.FUNCTION)
                         callback.apply(self, [e, data]);
                 });
+            return this;
         };
         
         __construct();
@@ -300,18 +319,23 @@
                 input_container: 'input_container',
                 dropdown: 'dropdown',
                 result: 'result',
+                loading: 'loading',
                 open: 'opened',
                 highlight: 'highlight',
                 highlight_text: 'highlight_text'
             },
             templates: {
-                input: '<input type="text" placeholder="|%Enter value...%|"/>',
-                result: '<div class="ExtAC-result sublevel-[[_sublevel]]" data-id="[[id]]" data-parent_id="[[parent_id]]">[[title]]</div>',
-                no_result: '',
-                example_template: '<div>|%some_translatable_text%| - [[some_value]]</div>'
+//                input: '<input type="text" placeholder="|%Enter value...%|"/>',
+                input: '<div class="ExtAC-input" placeholder="|%Enter value...%|" contenteditable="true"/>',
+                result: '<div class="ExtAC-result sublevel-[[_sublevel]] ExtAC-[[type]]" data-id="[[id]]" data-parent_id="[[parent_id]]">[[title]]</div>',
+                no_result: '<div class="ExtAC-no_result">|%No results found for <strong>"[[value]]"</strong>...%|</div>',
+                no_data: '<div class="ExtAC-no_data">|%No data provided...%|</div>',
+                value_path: '<span class="ExtAC-path">[[path]]</span>[[title]]'
             },
             placeholder: '',
-            open_on_focus: ''
+            value_format: '[[id]]',
+            show_value_path: true,
+            path_divider: ' _> '
         };
 
         this.settings = $.extend(true, {}, this.defaults, options || {});
@@ -324,7 +348,8 @@
             input_container: $(CONST.ELEMENTS.DIV),
             input: undefined,
             dropdown: $(CONST.ELEMENTS.DIV),
-            results: undefined
+            results: undefined,
+            no_results: undefined
         };
         
         var body_lang = this.$selectors.body.attr(CONST.ATTRIBUTE.LANG) || this.defaults.lang;
@@ -337,6 +362,8 @@
         this.localization = window.Localization[pluginName][lang_use] || window.Localization[pluginName][this.defaults.lang];
         
         this.dataSource = undefined;
+        
+        this.selected_value = {};
 
         function __construct() {
             _buildHtml();
@@ -364,18 +391,39 @@
             obj.$selectors.dropdown
                     .attr(CONST.ATTRIBUTE.CLASS, obj.settings.classes.cls_prefix + obj.settings.classes.dropdown)
                     .insertAfter(obj.$selectors.input_container);
+            
+            obj.$selectors.no_data = $(obj.renderTemplate(obj.settings.templates.no_data, {})).hide().appendTo(obj.$selectors.dropdown);
         }
         
         function _buildResultsHtml(){
-            var html = '';
-            
-            for (var i = 0, max = obj.dataSource.data.length; i < max; i++) {
-                html += obj.renderTemplate(obj.settings.templates.result, obj.dataSource.data[i]);
+            if (obj.dataSource.data.length > 0) {
+                var html = CONST.EMPTY_STRING;
+                
+                for (var i = 0, max = obj.dataSource.data.length; i < max; i++)
+                    html += obj.renderTemplate(obj.settings.templates.result, obj.dataSource.data[i]);
+
+                obj.$selectors.dropdown.html(html);
+
+                obj.$selectors.results = obj.$selectors.dropdown.children();
+
+                obj.$selectors.no_results = $(obj.renderTemplate(obj.settings.templates.no_result, {})).hide().appendTo(obj.$selectors.dropdown);
+                
+                if (obj.$selectors.root.val() === CONST.EMPTY_STRING)
+                    obj.$selectors.results.removeClass(obj.settings.classes.cls_prefix + obj.settings.classes.highlight);
+                else {
+                    var $highlighted = obj.$selectors.results
+                                                        .filter('[data-' + obj.dataSource.model.id_field + '="' + obj.$selectors.root.val() + '"]')
+                                                        .addClass(obj.settings.classes.cls_prefix + obj.settings.classes.highlight),
+                        highlighted_data = $highlighted.data();
+                    
+                    highlighted_data = obj.dataSource.getBy(obj.dataSource.model.id_field, highlighted_data[obj.dataSource.model.id_field]);
+                    
+                    _setTypingInputValue(highlighted_data);
+                    
+                }
+            } else {
+                obj.$selectors.no_data = $(obj.renderTemplate(obj.settings.templates.no_data, {})).appendTo(obj.$selectors.dropdown);
             }
-            
-            obj.$selectors.dropdown.html(html);
-            
-            obj.$selectors.results = obj.$selectors.dropdown.children();
         }
         
         function _initDataSource(){
@@ -383,24 +431,62 @@
         }
         
         this.openDropdown = function(){
+            if (obj.$selectors.input.get(0).nodeName === CONST.SELECTOR.INPUT)
+                obj.$selectors.input.val(obj.selected_value[obj.dataSource.model.text_field]);
+            else
+                obj.$selectors.input.text(obj.selected_value[obj.dataSource.model.text_field]);
+            
             obj.$selectors.wrapper.addClass(obj.settings.classes.cls_prefix + obj.settings.classes.open);
         };
         
         this.closeDropdown = function(){
             obj.$selectors.wrapper.removeClass(obj.settings.classes.cls_prefix + obj.settings.classes.open);
+            
+            if (obj.$selectors.input.get(0).nodeName === CONST.SELECTOR.INPUT)
+                obj.$selectors.input.val(obj.selected_value[obj.dataSource.model.text_field]);
+            else {
+                if (obj.settings.show_value_path) {
+                    var path = obj.selected_value._path? obj.selected_value._path.join(obj.settings.path_divider) : CONST.EMPTY_STRING;
+
+                    path = (path !== CONST.EMPTY_STRING)? path + obj.settings.path_divider : CONST.EMPTY_STRING;
+
+                    var selected_value = $.extend(true, {}, obj.selected_value, { path: path }),
+                        input_text = obj.settings.show_value_path? obj.renderTemplate(obj.settings.templates.value_path, selected_value) : obj.selected_value[obj.dataSource.model.text_field];
+
+                    obj.$selectors.input.html(input_text);
+                } else {
+                    obj.$selectors.input.text(obj.selected_value[obj.dataSource.model.text_field]);
+                }
+            }
+            
             obj.$selectors.input.trigger(CONST.EVENT.BLUR);
         };
         
         this.highlight = function(index){
-            var $highlighted = obj.$selectors.results.filter(':eq(' + index + ')');
+            var $highlighted = obj.$selectors.results.filter(':eq(' + index + ')'),
+                highlighted_data = $highlighted.data();
+        
+            highlighted_data = obj.dataSource.getBy(obj.dataSource.model.id_field, highlighted_data[obj.dataSource.model.id_field]);
             
             obj.$selectors.results.removeClass(obj.settings.classes.cls_prefix + obj.settings.classes.highlight);
             $highlighted
                     .addClass(obj.settings.classes.cls_prefix + obj.settings.classes.highlight)
                     .trigger(obj.settings.classes.cls_prefix + CONST.EVENT.FOCUS, [index]);
             
-            obj.$selectors.input.val($highlighted.text()).select();
+            _setTypingInputValue(highlighted_data);
         };
+        
+        function __addParent(result, stack){
+            var parent_idx = obj.dataSource.data.map(function(x){
+                return x[obj.dataSource.model.id_field];
+            }).indexOf(result[obj.dataSource.model.parent_id_field]);
+
+            if (stack.indexOf(obj.dataSource.data[parent_idx][obj.dataSource.model.id_field]) === -1)
+                stack.push(obj.dataSource.data[parent_idx][obj.dataSource.model.id_field]);
+
+            if (obj.dataSource.data[parent_idx][obj.dataSource.model.parent_id_field])
+                __addParent(obj.dataSource.data[parent_idx], stack);
+        }
         
         this.filter = function(string){
             if (string === CONST.EMPTY_STRING) {
@@ -412,32 +498,25 @@
                 
                 var found = [];
                 
-                function _addParent(result, stack){
-                    var parent_idx = obj.dataSource.data.map(function(x){
-                        return x.id;
-                    }).indexOf(result.parent_id);
-                    
-                    if (stack.indexOf(obj.dataSource.data[parent_idx].id) === -1)
-                        stack.push(obj.dataSource.data[parent_idx].id)
-                    
-                    if (obj.dataSource.data[parent_idx].parent_id)
-                        _addParent(obj.dataSource.data[parent_idx], stack);
-                }
-                
                 for (var i = 0, max = obj.dataSource.data.length; i < max; i++) {
                     if (obj.dataSource.data[i][obj.dataSource.model.text_field].toLowerCase().indexOf(string.toLowerCase()) > -1) {
                         found.push(obj.dataSource.data[i][obj.dataSource.model.id_field]);
                     
                         if (obj.dataSource.data[i][obj.dataSource.model.parent_id_field])
-                            _addParent(obj.dataSource.data[i], found);
-                        
+                            __addParent(obj.dataSource.data[i], found);
                     }
                 }
                 
+                if (found.length === 0) {
+                    var innerHtml = $(obj.renderTemplate(obj.settings.templates.no_result, { value: string })).get(0).innerHTML;
+                    obj.$selectors.no_results.show().html(innerHtml);
+                } else
+                    obj.$selectors.no_results.hide();
+                
                 obj.$selectors.results.each(function(){
                     var $result = $(this);
-                    if (found.indexOf($result.data().id) > -1) {
-                        var new_text = $result.text().replace(new RegExp(string, 'gi'), function(f){
+                    if (found.indexOf($result.data()[obj.dataSource.model.id_field]) > -1) {
+                        var new_text = $result.text().replace(new RegExp(string, CONST.REGEXP.GLOBAL_IGNORE_CASE), function(f){
                             return '<span class="' + obj.settings.classes.cls_prefix + obj.settings.classes.highlight_text + '">' + f + '</span>';
                         });
                         $result.show().html(new_text);
@@ -446,12 +525,61 @@
                 });
             }
         };
+        
+        this.setValue = function(data){
+            obj.selected_value = data;
+            obj.$selectors.root.val(obj.renderTemplate(obj.settings.value_format, data));
+        };
+        
+        function _setTypingInputValue(data){
+            if (obj.$selectors.input.get(0).nodeName === CONST.SELECTOR.INPUT) {
+                obj.$selectors.input.val(data[obj.dataSource.model.text_field]);
+                
+                if (obj.$selectors.wrapper.hasClass(obj.settings.classes.cls_prefix + obj.settings.classes.open))
+                    obj.$selectors.input.select();
+            } else {
+                if (obj.settings.show_value_path && !obj.$selectors.wrapper.hasClass(obj.settings.classes.cls_prefix + obj.settings.classes.open)) {
+                    var path = obj.selected_value._path? obj.selected_value._path.join(obj.settings.path_divider) : CONST.EMPTY_STRING;
+
+                    path = (path !== CONST.EMPTY_STRING)? path + obj.settings.path_divider : CONST.EMPTY_STRING;
+
+                    var selected_value = $.extend(true, {}, obj.selected_value, { path: path }),
+                        input_text = obj.settings.show_value_path? obj.renderTemplate(obj.settings.templates.value_path, selected_value) : obj.selected_value[obj.dataSource.model.text_field];
+
+                    obj.$selectors.input.html(input_text);
+                } else
+                    obj.$selectors.input.text(data[obj.dataSource.model.text_field]);
+                
+                if (obj.$selectors.wrapper.hasClass(obj.settings.classes.cls_prefix + obj.settings.classes.open)){
+                    var input = obj.$selectors.input.get(0);
+                    if (document.body.createTextRange) {
+                        var range = document.body.createTextRange();
+                        range.moveToElementText(input);
+                        range.select();
+                    } else if (window.getSelection) {
+                        var selection = window.getSelection(),
+                            range = document.createRange();
+
+                        range.selectNodeContents(input);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                    }
+                }
+            }
+        }
 
         function _startEventListeners() {
-            obj.dataSource.on('dataLoaded', function(e, data){
-                _buildResultsHtml();
-                obj.$selectors.results
+            obj.dataSource
+                .on('loadingData', function(){
+                    obj.$selectors.wrapper.addClass(obj.settings.classes.cls_prefix + obj.settings.classes.loading);
+                }).on('dataLoaded', function(e, data){
+                    obj.$selectors.wrapper.removeClass(obj.settings.classes.cls_prefix + obj.settings.classes.loading);
+                    obj.selected_value = obj.dataSource.getBy(obj.dataSource.model.id_field, obj.$selectors.root.val());
+                    
+                    _buildResultsHtml();
+                    obj.$selectors.results
                         .on(obj.settings.classes.cls_prefix + CONST.EVENT.FOCUS, function(e, index){
+                            // TODO: There is a small problem with scrolling with arrows, especialy going up;
                             var $highlighted = obj.$selectors.results.filter(':eq(' + index + ')'),
                                 elem_position = $highlighted.position().top + $highlighted.outerHeight(true),
                                 container_position = obj.$selectors.dropdown.scrollTop() + obj.$selectors.dropdown.outerHeight(true),
@@ -464,14 +592,16 @@
                                 if (elem_position - obj.$selectors.dropdown.outerHeight(true) > 0)
                                     obj.$selectors.dropdown.scrollTop(scroll);
                         }).on(CONST.EVENT.CLICK, function(e){
-                            var $this = $(e.target);
+                            var $this = $(e.target),
+                                selected_data = obj.dataSource.getBy(obj.dataSource.model.id_field, $this.data()[obj.dataSource.model.id_field]);
+
                             obj.highlight($this.index());
+                            obj.setValue(selected_data);
                             obj.closeDropdown();
                         });
-            });
+                });
             
             obj.$selectors.input_container.on(CONST.EVENT.CLICK, function(e){
-                e.stopPropagation();
                 if ($(e.target).is(obj.$selectors.input_container))
                     if (!obj.$selectors.wrapper.hasClass(obj.settings.classes.cls_prefix + obj.settings.classes.open)) {
                         obj.openDropdown();
@@ -483,6 +613,8 @@
             obj.$selectors.input
                     .on(CONST.EVENT.FOCUS, function(){
                         obj.openDropdown();
+                    }).on(CONST.EVENT.KEYDOWN, function(e){
+                        return e.keyCode !== 13;
                     }).on(CONST.EVENT.KEYUP, function(e){
                         switch (e.keyCode) {
                             case CONST.KEYCODE.ARROW_DOWN:
@@ -508,7 +640,12 @@
                             case CONST.KEYCODE.ENTER:
                                 var $highlighted = obj.$selectors.results.filter(CONST.SELECTOR.CLASS + obj.settings.classes.cls_prefix + obj.settings.classes.highlight),
                                     highlighted_data = $highlighted.data();
-                                highlighted_data.title = $highlighted.text();
+                                
+                                if ($highlighted.length > 0) {
+                                    highlighted_data.title = $highlighted.text();
+                                    obj.setValue(highlighted_data);
+                                } else
+                                    obj.setValue({});
                                 
                                 obj.closeDropdown();
                                 break;
@@ -516,13 +653,14 @@
                                 if (obj.$selectors.input.val() === CONST.EMPTY_STRING)
                                     obj.$selectors.results.removeClass(obj.settings.classes.cls_prefix + obj.settings.classes.highlight);
                                 
-                                obj.filter(obj.$selectors.input.val());
+                                obj.filter(obj.$selectors.input.text() || obj.$selectors.input.val());
                                 break;
                         }
                     });
                     
             obj.$selectors.html.on(CONST.EVENT.CLICK, function(e){
-                if (!$(e.target).parents(CONST.SELECTOR.CLASS + obj.settings.classes.cls_prefix + obj.settings.classes.wrapper).length)
+                var $e_wrapper = $(e.target).parents(CONST.SELECTOR.CLASS + obj.settings.classes.cls_prefix + obj.settings.classes.wrapper);
+                if (!$e_wrapper.is(obj.$selectors.wrapper))
                     obj.closeDropdown();
             });
         }
@@ -536,7 +674,14 @@
         };
 
         this.destroy = function () {
-            this.$selectors.root.removeData(pluginName);
+            this.$selectors.root
+                    .removeAttr('style')
+                    .insertBefore(this.$selectors.wrapper)
+                    .removeData(pluginName);
+            this.$selectors.wrapper
+                    .empty()
+                    .remove();
+            
             return this.$selectors.root;
         };
 
@@ -560,9 +705,7 @@
                     });
                 }
             } else {
-                if (window.console && console.error)
-                    console.error(window.Localization.global.text_not_provided);
-                return false;
+                return CONST.EMPTY_STRING;
             }
         },
         renderTemplate: function (template, data) {

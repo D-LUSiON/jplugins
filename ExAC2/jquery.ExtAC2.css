@@ -6,7 +6,8 @@
 .ExtAC-wrapper *:before,
 .ExtAC-wrapper *:after { margin: 0; padding: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
-.ExtAC-wrapper { display: inline-block; width: 100%; position: relative; }
+.ExtAC-wrapper { display: inline-block; width: 100%; position: relative; z-index: 1000; }
+.ExtAC-wrapper.ExtAC-opened { z-index: 1001; }
 .ExtAC-wrapper > .ExtAC-input_container {}
 .ExtAC-wrapper > .ExtAC-input_container input[type="text"] {}
 .ExtAC-wrapper > .ExtAC-dropdown { position: absolute; width: 100%; }
@@ -15,27 +16,54 @@
 /*
     --DESIGN and COLORS--
 */
+.ExtAC-wrapper { margin-bottom: 6px; }
+.ExtAC-wrapper:after { display: block; clear: both; content: ''; }
 .ExtAC-wrapper > .ExtAC-input_container { position: relative; z-index: 1000; border: 1px solid #ccc; }
-.ExtAC-wrapper > .ExtAC-input_container:before { float: right; display: block; width: 36px; height: 34px; border-left: 1px solid #ccc; padding: 10px; font-family: FontAwesome; text-align: center; content: '\f107'; cursor: pointer; }
+.ExtAC-wrapper > .ExtAC-input_container:before { float: right; display: block; width: 36px; height: 36px; border-left: 1px solid #ccc; padding: 10px; font-family: FontAwesome; text-align: center; content: '\f107'; cursor: pointer; }
+.ExtAC-wrapper.ExtAC-loading > .ExtAC-input_container:before { border-left: none; padding: 8px 0; text-align: center; content: '\f110'; -webkit-animation: spinning 2s infinite linear; animation: spinning 2s infinite linear; }
 .ExtAC-wrapper.ExtAC-opened > .ExtAC-input_container:before { padding: 9px 10px; content: '\f106'; }
 .ExtAC-wrapper > .ExtAC-input_container:hover { background-color: #ddd; }
-.ExtAC-wrapper > .ExtAC-input_container input[type="text"] {  width: calc(100% - 36px); border: none; padding: 10px 7px; cursor: text; }
-.ExtAC-wrapper > .ExtAC-input_container input[type="text"]:focus { outline: none; }
-.ExtAC-wrapper > .ExtAC-dropdown { max-height: 200px; border: 1px solid #ccc; border-top: none; overflow-y: auto; }
+.ExtAC-wrapper > .ExtAC-input_container input[type="text"],
+.ExtAC-wrapper > .ExtAC-input_container .ExtAC-input { width: calc(100% - 36px); margin: 0; border: none; padding: 10px 7px; background-color: #fff; cursor: text; }
+.ExtAC-wrapper > .ExtAC-input_container input[type="text"]:focus,
+.ExtAC-wrapper > .ExtAC-input_container .ExtAC-input:focus { outline: none; }
+.ExtAC-wrapper > .ExtAC-input_container .ExtAC-input[contenteditable=true]:empty:before { display: block; content: attr(placeholder); color: #888; font-style: italic; }
+.ExtAC-wrapper.ExtAC-loading > .ExtAC-input_container .ExtAC-input[contenteditable=true]:empty:before { display: block; content: ''; color: #888; font-style: italic; }
+.ExtAC-wrapper > .ExtAC-input_container .ExtAC-input .ExtAC-path { color: #888; font-style: italic; }
+.ExtAC-wrapper > .ExtAC-dropdown { max-height: 200px; border: 1px solid #ccc; border-top: none; overflow-y: auto; background-color: #fff; }
 .ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result { padding: 10px 7px; cursor: pointer; }
 .ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result[class*="sublevel"]:before { display: inline-block; margin-right: 5px; font-family: FontAwesome; content: '\f105'; }
-.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-0:before { padding-left:    0; }
-.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-1:before { padding-left: 16px; }
-.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-2:before { padding-left: 32px; }
-.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-3:before { padding-left: 48px; }
-.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-4:before { padding-left: 64px; }
-.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-5:before { padding-left: 80px; }
-.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-6:before { padding-left: 96px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-0:before { padding-left:   0; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-1:before { padding-left:  16px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-2:before { padding-left:  32px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-3:before { padding-left:  48px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-4:before { padding-left:  64px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-5:before { padding-left:  80px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-6:before { padding-left:  96px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-7:before { padding-left: 112px; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.sublevel-8:before { padding-left: 128px; }
 .ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.ExtAC-highlight,
 .ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result:hover { background-color: #ddd; }
 .ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result .ExtAC-highlight_text { background-color: #ffeb3b; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-no_result,
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-no_data { padding: 20px; font-size: 16px; font-style: italic; text-align: center; }
 
+/* spinning animation */
+
+@-webkit-keyframes spinning {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
+}
+@keyframes spinning {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
+}
 
 /* dropdown animation */
-.ExtAC-wrapper > .ExtAC-dropdown { visibility: hidden; height: 35px; overflow: hidden; opacity: 0; transform: translateY(-35px); transition: all 0.3s linear; }
+.ExtAC-wrapper > .ExtAC-dropdown { visibility: hidden; height: 36px; overflow: hidden; opacity: 0; transform: translateY(-36px); transition: all 0.3s linear; }
 .ExtAC-wrapper.ExtAC-opened > .ExtAC-dropdown { visibility: visible; height: auto; overflow-y: auto; opacity: 1; transform: translateY(0); }
+
+/* custom definitions */
+
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.ExtAC-brand { font-weight: 900; }
+.ExtAC-wrapper > .ExtAC-dropdown .ExtAC-result.ExtAC-serie {}

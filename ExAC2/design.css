@@ -16,3 +16,8 @@ h1 small { font-size: 0.5em; }
 :-moz-placeholder           { color: #ccc; font-size: 14px; font-style: italic; }
 ::-moz-placeholder          { color: #ccc; font-size: 14px; font-style: italic; }
 :-ms-input-placeholder      { color: #ccc; font-size: 14px; font-style: italic; }
+
+.ExtAC-city { font-weight: 900; text-transform: uppercase; }
+.ExtAC-neighborhood {}
+.ExtAC-region { font-weight: bold; }
+.ExtAC-other { font-style: italic; }

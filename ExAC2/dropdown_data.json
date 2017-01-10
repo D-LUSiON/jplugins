@@ -2,91 +2,109 @@
     {
         "id": 1,
         "parent_id": null,
-        "title": "София"
+        "title": "София",
+        "type": "city"
     },
     {
         "id": 2,
         "parent_id": null,
-        "title": "Пловдив"
+        "title": "Пловдив",
+        "type": "city"
     },
     {
         "id": 3,
         "parent_id": 1,
-        "title": "Център"
+        "title": "Център",
+        "type": "neighborhood"
     },
     {
         "id": 4,
         "parent_id": 2,
-        "title": "Element 2-1"
+        "title": "Element 2-1",
+        "type": "other"
     },
     {
         "id": 5,
         "parent_id": 2,
-        "title": "Element 2-2"
+        "title": "Element 2-2",
+        "type": "other"
     },
     {
         "id": 6,
         "parent_id": 5,
-        "title": "Element 2-2-1"
+        "title": "Element 2-2-1",
+        "type": "other"
     },
     {
         "id": 7,
         "parent_id": null,
-        "title": "Варна"
+        "title": "Варна",
+        "type": "city"
     },
     {
         "id": 8,
         "parent_id": 1,
-        "title": "Изток"
+        "title": "Изток",
+        "type": "region"
     },
     {
         "id": 9,
         "parent_id": 8,
-        "title": "Младост 1"
+        "title": "Младост 1",
+        "type": "neighborhood"
     },
     {
         "id": 10,
         "parent_id": 8,
-        "title": "Младост 1А"
+        "title": "Младост 1А",
+        "type": "neighborhood"
     },
     {
         "id": 11,
         "parent_id": 8,
-        "title": "Младост 2"
+        "title": "Младост 2",
+        "type": "neighborhood"
     },
     {
         "id": 12,
         "parent_id": 8,
-        "title": "Младост 3"
+        "title": "Младост 3",
+        "type": "neighborhood"
     },
     {
         "id": 13,
         "parent_id": 8,
-        "title": "Младост 4"
+        "title": "Младост 4",
+        "type": "neighborhood"
     },
     {
         "id": 14,
         "parent_id": 1,
-        "title": "Север"
+        "title": "Север",
+        "type": "region"
     },
     {
         "id": 15,
         "parent_id": 14,
-        "title": "Надежда 1"
+        "title": "Надежда 1",
+        "type": "neighborhood"
     },
     {
         "id": 16,
         "parent_id": 14,
-        "title": "Надежда 2"
+        "title": "Надежда 2",
+        "type": "neighborhood"
     },
     {
         "id": 17,
         "parent_id": 14,
-        "title": "Надежда 3"
+        "title": "Надежда 3",
+        "type": "neighborhood"
     },
     {
         "id": 18,
         "parent_id": 14,
-        "title": "Надежда 4"
+        "title": "Надежда 4",
+        "type": "neighborhood"
     }
 ]
