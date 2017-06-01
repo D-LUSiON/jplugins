@@ -1,0 +1,29 @@
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css';
+
+/**
+ * Responsive Tabs
+ */
+.responsive-tabs { display: flex; flex-wrap: wrap; }
+.responsive-tabs > label { order: 1; position: relative; z-index: 2; display: block; margin-right: 5px; margin-bottom: 0; border: 1px solid #2d5180; border-radius: 4px 4px 0 0; padding: 6px 15px; background-color: #ebebeb; color: #000; font-weight: bold; font-size: 0.9em; vertical-align: middle; transition: background ease 0.2s; cursor: pointer; }
+.responsive-tabs > label .fa { margin-right: 5px; font-size: 1.4em; vertical-align: middle; }
+.responsive-tabs > label .fa.fa-check-circle { color: #277a31; }
+.responsive-tabs > label .fa.fa-exclamation-circle { color: #b50000; }
+.responsive-tabs > .tab { order: 99; flex-grow: 1; width: 100%; display: none; padding: 10px; background: #fff; border: 1px solid #2d5180; }
+.responsive-tabs > .tab:empty,
+.responsive-tabs > .tab.loading { min-height: 200px; background-color: rgba(255, 255, 255, 0.5); background-image: url(img/ajax-loader.gif); background-position: center center; background-repeat: no-repeat; }
+.responsive-tabs > .tab .panel { margin-bottom: 10px; }
+.responsive-tabs > input[type="radio"] { position: absolute; opacity: 0; }
+.responsive-tabs > input[type="radio"]:checked + label { background-color: #fff; border-bottom: 1px solid #fff; }
+.responsive-tabs > input[type="radio"]:checked + label + .tab { display: block; position: relative; top: -1px; }
+
+@media (max-width: 991px) {
+    .responsive-tabs > label { width: 100%; margin-right: 0; margin-top: 0.2rem; }
+    .responsive-tabs > label,
+    .responsive-tabs > .tab { order: initial; }
+    .responsive-tabs > input[type="radio"] + label { margin-bottom: 3px; border-bottom: 1px solid #2d5180; border-radius: 4px; }
+    .responsive-tabs > input[type="radio"] + label:before { float: right; content: '\f107'; font-family: FontAwesome; font-size: 1.27em; -webkit-transition: all 300ms ease-in-out; -o-transition: all 300ms ease-in-out; transition: all 300ms ease-in-out; }
+    .responsive-tabs > input[type="radio"]:checked + label { border-bottom: 1px solid #2d5180; }
+    .responsive-tabs > input[type="radio"]:checked + label:before { -webkit-transform: rotate(180deg); -ms-transform: rotate(180deg); -o-transform: rotate(180deg); transform: rotate(180deg); }
+    .responsive-tabs > input[type="radio"]:checked + label + .tab { border: none; padding: 10px 0; }
+    .responsive-tabs > .tab { border-radius: 4px; }
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Responsive Tabs demo</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./jquery.responsiveTabs.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>jQuery Responsive tabs demo</h1>
+                <div class="responsive-tabs">
+                    <!--Here starts a tab block-->
+                    <input type="radio" name="tabs" value="About" id="About" checked="checked">
+                    <label for="About">
+                        <span class="fa fa-check-circle"></span>About
+                    </label>
+                    <div class="tab">
+                        <h3>About</h3>
+                        <p>This is a demo for jQuery Responsive tabs</p>
+                        <p>Nisi labore minim magna adipisicing qui aliquip mollit laborum nulla nostrud consectetur reprehenderit.</p>
+                    </div>
+                    <!--here's the end of the tab block-->
+                    <input type="radio" name="tabs" value="ConditjQueryions" id="jQuery">
+                    <label for="jQuery">jQuery</label>
+                    <div class="tab">
+                        <h3>What is jQuery?</h3>
+                        <p>Do tempor nulla officia veniam magna voluptate sint cupidatat proident irure consequat tempor duis ullamco.</p>
+                        <p>Occaecat fugiat officia aliqua ex sit aliquip dolore cupidatat proident.</p>
+                    </div>
+                    <input type="radio" name="tabs" value="Information" id="Information">
+                    <label for="Information">
+                        <span class="fa fa-exclamation-circle"></span>Information
+                    </label>
+                    <div class="tab">
+                        <h3>Information</h3>
+                        <p>Cillum do anim fugiat non laboris nisi officia reprehenderit irure sit.</p>
+                        <p>Aliqua et ad esse qui aute sit.</p>
+                        <p>Qui ea anim voluptate tempor enim do magna excepteur velit.</p>
+                    </div>
+                    <input type="radio" name="tabs" value="Bootstrap" id="Bootstrap">
+                    <label for="Bootstrap">Bootstrap</label>
+                    <div class="tab">
+                        <h3>Bootstrap</h3>
+                        <p>In cupidatat magna eiusmod labore labore id occaecat. Aliquip duis laborum tempor fugiat ut ut cupidatat. Exercitation qui fugiat deserunt eiusmod occaecat aliqua sunt. Qui do anim cillum do aliqua velit irure.</p>
+                        <p>Culpa eu veniam sunt aliqua excepteur adipisicing esse ullamco deserunt.</p>
+                    </div>
+                    <input type="radio" name="tabs" value="API" id="API">
+                    <label for="API">Information</label>
+                    <div class="tab">
+                        <h3>API</h3>
+                        <p>Voluptate incididunt adipisicing deserunt eiusmod id. Ad aliquip duis aute cupidatat est duis do ea consequat eu officia sunt voluptate. Ex adipisicing eiusmod excepteur laboris consequat minim qui adipisicing occaecat qui duis ullamco non reprehenderit. Laborum duis mollit proident reprehenderit enim. Velit aute aute minim do tempor est cupidatat occaecat ad in. Minim reprehenderit elit proident commodo.</p>
+                        <p>Consequat ex ipsum eu veniam esse occaecat ipsum cupidatat et reprehenderit. Laboris eu labore incididunt id ut esse nulla. Pariatur quis aliquip mollit proident consequat excepteur velit dolor minim irure tempor nisi exercitation.</p>
+                    </div>
+                    <input type="radio" name="tabs" value="AnotherTabWithLongName" id="AnotherTabWithLongName">
+                    <label for="AnotherTabWithLongName">Another Tab With Long Name</label>
+                    <div class="tab">
+                        <h3>Another Tab With Long Name</h3>
+                        <p>Mollit eiusmod ut non id enim minim commodo cupidatat velit. Minim mollit enim laborum ipsum consectetur est. Pariatur magna in nulla excepteur occaecat voluptate est exercitation occaecat voluptate veniam laboris id. Veniam aute ex cupidatat nulla pariatur ipsum ullamco esse dolor aliqua cupidatat.</p>
+                        <p>Aliqua incididunt est consequat quis proident adipisicing reprehenderit consectetur eiusmod Lorem irure exercitation. Fugiat et esse ex excepteur. Lorem fugiat aute nostrud nisi ullamco. Consequat ex in elit deserunt. Cupidatat sunt ex aute ullamco cupidatat ipsum sunt eiusmod velit. Duis adipisicing enim mollit in magna pariatur occaecat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="./jquery.responsiveTabs.js"></script>
+    <script>
+        $(function () {
+            $('.responsive-tabs').responsiveTabs();
+        });
+    </script>
+</body>
+
+</html>
